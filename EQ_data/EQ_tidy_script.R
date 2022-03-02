@@ -154,4 +154,28 @@ alldata <- rbind (P1_ASC_LARGE_EQ, P2_ASC_LARGE_EQ, P3_ASC_LARGE_EQ,P4_ASC_LARGE
                   P111_ASC_LARGE_EQ, P112_ASC_LARGE_EQ, P113_ASC_LARGE_EQ, P114_ASC_LARGE_EQ, P115_ASC_LARGE_EQ, P116_ASC_LARGE_EQ,
                   P117_ASC_LARGE_EQ, P118_ASC_LARGE_EQ, P119_ASC_LARGE_EQ, P120_ASC_LARGE_EQ)
 
+#view(alldata)
+
+alldata <- alldata%>%
+  mutate(Group_Status = participant <= 60)
+
+# Rename TRUE FALSE to more meaningful labels.
+alldata$Group_Status[alldata$Group_Status == 'TRUE'] <- "ASC"
+alldata$Group_Status[alldata$Group_Status == 'FALSE'] <- "TD"
 view(alldata)
+
+# EQ scoring ignore neutrals as these are filler items we are not interested in. 
+
+#We want to add a column called EQ_tidy that converts the values to the appropriate score. 
+# What the code should do is take items that are positively scored and turn a 1 into a 2, 
+# turn a 2 into a 1, and turn 3 and 4 into a 0. 
+# What the code should do is take items that are negatively scored and turn a 4 into a 2, 
+# turn a 3 into a 1, and turn 1 and 2 into a 0. 
+
+#Code to mutate data to automatically tidy response to correct standardized score
+alldata <- alldata%>%
+  mutate(EQ_tidy = EQ_scoring_type = 'positive' && EQ_resp = 1 )
+
+# if else statements??? or && statements
+
+
