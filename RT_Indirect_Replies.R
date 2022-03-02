@@ -10,6 +10,10 @@ library(performance)
 library(see)
 library(sjPlot)
 library(ggrepel)
+library(optimx)
+library(dfoptim)
+library(parallel)
+library(minqa)
 
 set.seed(1234)
 
@@ -169,7 +173,7 @@ view(alldata)
 
 # Create a new column to specify group status ASC vs TD.
 alldata <- alldata%>%
-  mutate(Group_Status = participant <= 30)
+  mutate(Group_Status = participant <= 60)
 
 # Rename TRUE FALSE to more meaningful labels.
 alldata$Group_Status[alldata$Group_Status == 'TRUE'] <- "ASC"
@@ -265,8 +269,30 @@ TD_Group <- filter(alldata, Group_Status == "TD")
 
 
 # Region 2- Manipulation
+# Using allFit() with (g)lmer by Josh Nugent to optimize the model automatically https://joshua-nugent.github.io/allFit/ 
 #model.nullR3 <- lmer(RT3ms ~ (1 + cond | subj) + (1 + cond | item), all_data_join) 
-modelR2 <- lmer(RT2ms ~ condition_number * Group_Status + (1 | participant) + (1 | item_number), alldata) 
+modelR2 <- glmer(RT2ms ~ condition_number * Group_Status + (1 + condition_number | participant) + 
+                   (1 + condition_number | item_number), alldata, family = Gamma) 
+diff_optims <- allFit(modelR2, maxfun = 1e5, parallel = 'multicore', ncpus = detectCores())
+is.OK <- sapply(diff_optims, is, "merMod")
+diff_optims.OK <- diff_optims[is.OK]
+lapply(diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
+
+convergence_results <- lapply(diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
+working_indices <- sapply(convergence_results, is.null)
+
+if(sum(working_indices)==0){
+  print("No algorithms from allFit converged.")
+  print("You may still be able to use the results, but proceed with extreme caution.")
+  first_fit <- NULL
+} else {
+  first_fit <- diff_optims[working_indices][[1]]
+}
+first_fit
+
+modelR2 <- glmer(RT2ms ~ condition_number * Group_Status + (1 | participant) + 
+                   (1 | item_number), alldata, family = Gamma)
+
 summary(modelR2)
 check_model(modelR2)
 qqnorm(residuals(modelR2))
@@ -274,25 +300,44 @@ qqline(residuals(modelR2))
 descdist(alldata$RT2ms)
 #ranef(modelR4)
 
-
-# Need to look at the gamma distribution but not sure how to anylsye that or what package need help with it.
-
 # Seperate analysis based on group
-modelR3_TD <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), TD_Group) 
-summary(modelR3_TD)                   
+#modelR3_TD <- glmer(RT3ms ~ condition_number + (1 + condition_number | participant) + (1 + condition_number | item_number), TD_Group) 
+#summary(modelR3_TD)                   
 
-modelR3_ASC <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), ASC_Group) 
-summary(modelR3_ASC)                   
+#modelR3_ASC <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), ASC_Group) 
+#summary(modelR3_ASC)                   
 
 # Region 3- Question
 
 #model.nullR4 <- lmer(R4 ~ (1 + cond | subj) + (1 + cond | item), all_data_join) 
-modelR3 <- lmer(RT3ms ~ condition_number * Group_Status + (1 + condition_number | participant) + (1 + condition_number | item_number), alldata) 
+modelR3 <- glmer(RT3ms ~ condition_number * Group_Status + (1 + condition_number | participant) + (1 + condition_number | item_number), alldata, family = Gamma) 
 summary(modelR3)
+diff_optims <- allFit(modelR3, maxfun = 1e5, parallel = 'multicore', ncpus = detectCores())
+is.OK <- sapply(diff_optims, is, "merMod")
+diff_optims.OK <- diff_optims[is.OK]
+lapply(diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
+
+convergence_results <- lapply(diff_optims.OK,function(x) x@optinfo$conv$lme4$messages)
+working_indices <- sapply(convergence_results, is.null)
+
+if(sum(working_indices)==0){
+  print("No algorithms from allFit converged.")
+  print("You may still be able to use the results, but proceed with extreme caution.")
+  first_fit <- NULL
+} else {
+  first_fit <- diff_optims[working_indices][[1]]
+}
+first_fit
+
 check_model(modelR3)
 qqnorm(residuals(modelR3))
 qqline(residuals(modelR3))
 descdist(alldata$RT3ms)
+
+modelR3 <- glmer(RT3ms ~ condition_number * Group_Status + (1 | participant) + (1 | item_number), alldata, family = Gamma) 
+summary(modelR3)
+
+
 #ranef(modelR4)
 
 # No singular fit 
