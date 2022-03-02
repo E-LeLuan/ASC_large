@@ -164,7 +164,7 @@ alldata$Group_Status[alldata$Group_Status == 'TRUE'] <- "ASC"
 alldata$Group_Status[alldata$Group_Status == 'FALSE'] <- "TD"
 view(alldata)
 
-# EQ scoring ignore neutrals as these are filler items we are not interested in. 
+# EQ scoring ignore none as these are filler items we are not interested in. 
 
 #We want to add a column called EQ_tidy that converts the values to the appropriate score. 
 # What the code should do is take items that are positively scored and turn a 1 into a 2, 
@@ -172,10 +172,27 @@ view(alldata)
 # What the code should do is take items that are negatively scored and turn a 4 into a 2, 
 # turn a 3 into a 1, and turn 1 and 2 into a 0. 
 
-#Code to mutate data to automatically tidy response to correct standardized score
-alldata <- alldata%>%
-  mutate(EQ_tidy = EQ_scoring_type = 'positive' && EQ_resp = 1 )
+alldata <- alldata %>% mutate(EQ_tidy = case_when 
+                              (EQ_scoring_type == 'positive' &  EQ_resp == 1 ~ 2, 
+                                EQ_scoring_type == 'positive' &  EQ_resp == 2 ~ 1,
+                                EQ_scoring_type == 'positive' &  EQ_resp == 3 ~ 0,
+                                EQ_scoring_type == 'positive' &  EQ_resp == 4 ~ 0,
+                                EQ_scoring_type == 'none' ~ 0,
+                                EQ_scoring_type == 'negative' &  EQ_resp == 1 ~ 0,
+                                EQ_scoring_type == 'negative' &  EQ_resp == 2 ~ 0,
+                                EQ_scoring_type == 'negative' &  EQ_resp == 3 ~ 1,
+                                EQ_scoring_type == 'negative' &  EQ_resp == 4 ~ 2,))
+view(alldata)
 
-# if else statements??? or && statements
+# It worked!!!!!
+
+# Then we can add this column for each participant to get their individual EQ score
+EQ_score <- alldata %>%
+  group_by(participant) %>%
+  summarise_at(vars(EQ_tidy), list(EQ_score = sum))
+
+alldata <- inner_join(alldata, EQ_score, by = "participant")
+
+view(alldata)
 
 
