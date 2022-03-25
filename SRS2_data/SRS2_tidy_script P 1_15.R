@@ -19,18 +19,13 @@ P7_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P7_ASC_LARGE_SRS2.csv")
 P8_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P8_ASC_LARGE_SRS2.csv")
 P9_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P9_ASC_LARGE_SRS2.csv")
 P10_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P10_ASC_LARGE_SRS2.csv")
-P11_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P11_ASC_LARGE_SRS2.csv")
-P12_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P12_ASC_LARGE_SRS2.csv")
-P13_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P13_ASC_LARGE_SRS2.csv")
-P14_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P14_ASC_LARGE_SRS2.csv")
-P15_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P15_ASC_LARGE_SRS2.csv")
+
 
 
 # Combining the individual data spreadsheets into one data frame.
 
 alldata <- rbind (P1_ASC_LARGE_SRS2,P2_ASC_LARGE_SRS2,P3_ASC_LARGE_SRS2,P4_ASC_LARGE_SRS2,P5_ASC_LARGE_SRS2,P6_ASC_LARGE_SRS2,
-                  P7_ASC_LARGE_SRS2,P8_ASC_LARGE_SRS2,P9_ASC_LARGE_SRS2,P10_ASC_LARGE_SRS2,P11_ASC_LARGE_SRS2,P12_ASC_LARGE_SRS2,
-                  P13_ASC_LARGE_SRS2,P14_ASC_LARGE_SRS2,P15_ASC_LARGE_SRS2)
+                  P7_ASC_LARGE_SRS2,P8_ASC_LARGE_SRS2,P9_ASC_LARGE_SRS2,P10_ASC_LARGE_SRS2)
                 
 
 view(alldata)
@@ -41,7 +36,7 @@ view(alldata)
 # Rename TRUE FALSE to more meaningful labels.
 #alldata$Group_Status[alldata$Group_Status == 'TRUE'] <- "ASC"
 #alldata$Group_Status[alldata$Group_Status == 'FALSE'] <- "TD"
-view(alldata)
+#view(alldata)
 
 # SRS2 scoring ignore none as these are filler items we are not interested in. 
 
