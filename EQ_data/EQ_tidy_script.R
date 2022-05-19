@@ -195,4 +195,14 @@ alldata <- inner_join(alldata, EQ_score, by = "participant")
 
 view(alldata)
 
+#Let's look at the difference between the two groups
+alldata %>% 
+  group_by(Group_Status) %>%
+  summarise(mean(EQ_score), sd(EQ_score))
+
+#Much lower empathy scores for the ASC group compared to the TD group Let's have a look at this with a t test
+ASC_EQ_mean <- rnorm(60, mean = 23.7, sd = 10.4)
+TD_EQ_mean <- rnorm(60, mean = 46.2, sd = 13.4)
+t.test(ASC_EQ_mean, TD_EQ_mean, var.equal = TRUE)
+
 
