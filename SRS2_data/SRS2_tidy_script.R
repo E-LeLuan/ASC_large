@@ -3,7 +3,7 @@
 
 library(tidyverse)
 
-set.seed(1234)
+set.seed(1235)
 
 # Importing the data into R.
 
@@ -68,66 +68,66 @@ P57_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P57_ASC_LARGE_SRS2.csv")
 P58_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P58_ASC_LARGE_SRS2.csv")
 P59_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P59_ASC_LARGE_SRS2.csv")
 P60_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P60_ASC_LARGE_SRS2.csv")
-P61_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P1_ASC_LARGE_SRS2.csv")
-P62_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P2_ASC_LARGE_SRS2.csv")
-P63_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P3_ASC_LARGE_SRS2.csv")
-P64_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P4_ASC_LARGE_SRS2.csv")
-P65_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P5_ASC_LARGE_SRS2.csv")
-P66_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P6_ASC_LARGE_SRS2.csv")
-P67_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P7_ASC_LARGE_SRS2.csv")
-P68_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P8_ASC_LARGE_SRS2.csv")
-P69_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P9_ASC_LARGE_SRS2.csv")
-P70_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P10_ASC_LARGE_SRS2.csv")
-P71_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P11_ASC_LARGE_SRS2.csv")
-P72_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P12_ASC_LARGE_SRS2.csv")
-P73_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P13_ASC_LARGE_SRS2.csv")
-P74_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P14_ASC_LARGE_SRS2.csv")
-P75_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P15_ASC_LARGE_SRS2.csv")
-P76_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P16_ASC_LARGE_SRS2.csv")
-P77_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P17_ASC_LARGE_SRS2.csv")
-P78_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P18_ASC_LARGE_SRS2.csv")
-P79_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P19_ASC_LARGE_SRS2.csv")
-P80_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P20_ASC_LARGE_SRS2.csv")
-P81_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P21_ASC_LARGE_SRS2.csv")
-P82_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P22_ASC_LARGE_SRS2.csv")
-P83_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P23_ASC_LARGE_SRS2.csv")
-P84_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P24_ASC_LARGE_SRS2.csv")
-P85_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P25_ASC_LARGE_SRS2.csv")
-P86_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P26_ASC_LARGE_SRS2.csv")
-P87_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P27_ASC_LARGE_SRS2.csv")
-P88_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P28_ASC_LARGE_SRS2.csv")
-P89_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P29_ASC_LARGE_SRS2.csv")
-P90_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P30_ASC_LARGE_SRS2.csv")
-P91_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P31_ASC_LARGE_SRS2.csv")
-P92_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P32_ASC_LARGE_SRS2.csv")
-P93_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P33_ASC_LARGE_SRS2.csv")
-P94_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P34_ASC_LARGE_SRS2.csv")
-P95_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P35_ASC_LARGE_SRS2.csv")
-P96_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P36_ASC_LARGE_SRS2.csv")
-P97_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P37_ASC_LARGE_SRS2.csv")
-P98_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P38_ASC_LARGE_SRS2.csv")
-P99_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P39_ASC_LARGE_SRS2.csv")
-P100_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P40_ASC_LARGE_SRS2.csv")
-P101_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P41_ASC_LARGE_SRS2.csv")
-P102_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P42_ASC_LARGE_SRS2.csv")
-P103_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P43_ASC_LARGE_SRS2.csv")
-P104_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P44_ASC_LARGE_SRS2.csv")
-P105_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P45_ASC_LARGE_SRS2.csv")
-P106_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P46_ASC_LARGE_SRS2.csv")
-P107_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P47_ASC_LARGE_SRS2.csv")
-P108_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P48_ASC_LARGE_SRS2.csv")
-P109_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P49_ASC_LARGE_SRS2.csv")
-P110_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P50_ASC_LARGE_SRS2.csv")
-P111_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P51_ASC_LARGE_SRS2.csv")
-P112_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P52_ASC_LARGE_SRS2.csv")
-P113_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P53_ASC_LARGE_SRS2.csv")
-P114_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P54_ASC_LARGE_SRS2.csv")
-P115_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P55_ASC_LARGE_SRS2.csv")
-P116_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P56_ASC_LARGE_SRS2.csv")
-P117_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P57_ASC_LARGE_SRS2.csv")
-P118_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P58_ASC_LARGE_SRS2.csv")
-P119_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P59_ASC_LARGE_SRS2.csv")
-P120_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P60_ASC_LARGE_SRS2.csv")
+P61_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P61_ASC_LARGE_SRS2.csv")
+P62_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P62_ASC_LARGE_SRS2.csv")
+P63_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P63_ASC_LARGE_SRS2.csv")
+P64_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P64_ASC_LARGE_SRS2.csv")
+P65_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P65_ASC_LARGE_SRS2.csv")
+P66_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P66_ASC_LARGE_SRS2.csv")
+P67_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P67_ASC_LARGE_SRS2.csv")
+P68_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P68_ASC_LARGE_SRS2.csv")
+P69_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P69_ASC_LARGE_SRS2.csv")
+P70_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P70_ASC_LARGE_SRS2.csv")
+P71_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P71_ASC_LARGE_SRS2.csv")
+P72_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P72_ASC_LARGE_SRS2.csv")
+P73_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P73_ASC_LARGE_SRS2.csv")
+P74_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P74_ASC_LARGE_SRS2.csv")
+P75_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P75_ASC_LARGE_SRS2.csv")
+P76_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P76_ASC_LARGE_SRS2.csv")
+P77_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P77_ASC_LARGE_SRS2.csv")
+P78_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P78_ASC_LARGE_SRS2.csv")
+P79_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P79_ASC_LARGE_SRS2.csv")
+P80_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P80_ASC_LARGE_SRS2.csv")
+P81_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P81_ASC_LARGE_SRS2.csv")
+P82_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P82_ASC_LARGE_SRS2.csv")
+P83_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P83_ASC_LARGE_SRS2.csv")
+P84_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P84_ASC_LARGE_SRS2.csv")
+P85_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P85_ASC_LARGE_SRS2.csv")
+P86_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P86_ASC_LARGE_SRS2.csv")
+P87_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P87_ASC_LARGE_SRS2.csv")
+P88_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P88_ASC_LARGE_SRS2.csv")
+P89_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P89_ASC_LARGE_SRS2.csv")
+P90_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P90_ASC_LARGE_SRS2.csv")
+P91_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P91_ASC_LARGE_SRS2.csv")
+P92_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P92_ASC_LARGE_SRS2.csv")
+P93_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P93_ASC_LARGE_SRS2.csv")
+P94_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P94_ASC_LARGE_SRS2.csv")
+P95_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P95_ASC_LARGE_SRS2.csv")
+P96_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P96_ASC_LARGE_SRS2.csv")
+P97_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P97_ASC_LARGE_SRS2.csv")
+P98_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P98_ASC_LARGE_SRS2.csv")
+P99_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P99_ASC_LARGE_SRS2.csv")
+P100_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P100_ASC_LARGE_SRS2.csv")
+P101_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P101_ASC_LARGE_SRS2.csv")
+P102_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P102_ASC_LARGE_SRS2.csv")
+P103_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P103_ASC_LARGE_SRS2.csv")
+P104_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P104_ASC_LARGE_SRS2.csv")
+P105_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P105_ASC_LARGE_SRS2.csv")
+P106_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P106_ASC_LARGE_SRS2.csv")
+P107_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P107_ASC_LARGE_SRS2.csv")
+P108_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P108_ASC_LARGE_SRS2.csv")
+P109_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P109_ASC_LARGE_SRS2.csv")
+P110_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P110_ASC_LARGE_SRS2.csv")
+P111_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P111_ASC_LARGE_SRS2.csv")
+P112_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P112_ASC_LARGE_SRS2.csv")
+P113_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P113_ASC_LARGE_SRS2.csv")
+P114_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P114_ASC_LARGE_SRS2.csv")
+P115_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P115_ASC_LARGE_SRS2.csv")
+P116_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P116_ASC_LARGE_SRS2.csv")
+P117_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P117_ASC_LARGE_SRS2.csv")
+P118_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P118_ASC_LARGE_SRS2.csv")
+P119_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P119_ASC_LARGE_SRS2.csv")
+P120_ASC_LARGE_SRS2 <- read_csv("SRS2_data/P120_ASC_LARGE_SRS2.csv")
 
 
 # Combining the individual data spreadsheets into one data frame.
@@ -155,6 +155,8 @@ alldata <- rbind (P1_ASC_LARGE_SRS2, P2_ASC_LARGE_SRS2, P3_ASC_LARGE_SRS2,P4_ASC
                   P107_ASC_LARGE_SRS2, P108_ASC_LARGE_SRS2, P109_ASC_LARGE_SRS2, P110_ASC_LARGE_SRS2, P111_ASC_LARGE_SRS2,
                   P112_ASC_LARGE_SRS2, P113_ASC_LARGE_SRS2, P114_ASC_LARGE_SRS2, P115_ASC_LARGE_SRS2, P116_ASC_LARGE_SRS2,
                   P117_ASC_LARGE_SRS2, P118_ASC_LARGE_SRS2, P119_ASC_LARGE_SRS2, P120_ASC_LARGE_SRS2)
+
+#view(alldata)
 
 
 # check it yup all good
@@ -187,6 +189,8 @@ alldata <- alldata %>% mutate(SRS2_tidy = case_when
                                 SRS2_scoring_type == 'negative' &  SRS2_resp == 2 ~ 2,
                                 SRS2_scoring_type == 'negative' &  SRS2_resp == 3 ~ 1,
                                 SRS2_scoring_type == 'negative' &  SRS2_resp == 4 ~ 0,))
+
+
 #view(alldata)
 
 # It worked!!!!!
@@ -197,6 +201,8 @@ alldata <- alldata %>% mutate(SRS2_tidy = case_when
 # Total score first
 alldata <- alldata %>% group_by(participant) %>%
   mutate(total_RAW_score = sum(SRS2_tidy))
+
+view(alldata)
 
 # Now individual treatment subscale raw scores
 
@@ -224,15 +230,16 @@ alldata <- alldata %>% group_by(participant, DSM5_group) %>%
 # Let'd find the minimum vale so we don't do any extra work
 min(alldata$total_RAW_score)
 max(alldata$total_RAW_score)
-#output min is 18 and the max is 149 so we don't need to input values below for anything less
-
-#Why has it only done this for one participants data???????? grrrrrr
-#alldata['total_t_score'][alldata['total_t_score']> 17 & alldata['total_t_score'] <19] <- 42
-# Also Doesn't work!!! 
-#alldata <- alldata %>% mutate(total_t_score = case_when(total_RAW_score > 17 & alldata$total_raw_score < 19 ~ '42'))
+#output min is 8 and the max is 173
 
 alldata <- alldata %>%
-  mutate(total_t_score = case_when(total_RAW_score >= 17 & total_RAW_score <= 19 ~ '42',
+  mutate(total_t_score = case_when(total_RAW_score >= 0 & total_RAW_score <= 2 ~ '36',
+                                   total_RAW_score >= 3 & total_RAW_score <= 4 ~ '37',
+                                   total_RAW_score >= 5 & total_RAW_score <= 7 ~ '38',
+                                   total_RAW_score >= 8 & total_RAW_score <= 10 ~ '39',
+                                   total_RAW_score >= 11 & total_RAW_score <= 13 ~ '40',
+                                   total_RAW_score >= 14 & total_RAW_score <= 16 ~ '41',
+                                   total_RAW_score >= 17 & total_RAW_score <= 19 ~ '42',
                                    total_RAW_score >= 20 & total_RAW_score <= 21 ~ '43',
                                    total_RAW_score >= 22 & total_RAW_score <= 24 ~ '44',
                                    total_RAW_score >= 25 & total_RAW_score <= 27 ~ '45',
@@ -302,15 +309,15 @@ aggregate(treatment_RAW_score ~ SRS2_treatment_subscale, alldata, function(x) ma
 
 #SRS2_treatment_subscale treatment_RAW_score
 #1                     awr                   1
-#2                     cog                   2
-#3                     com                   2
-#4                     mot                   3
+#2                     cog                   1
+#3                     com                   0
+#4                     mot                   1
 #5                     rrb                   0
-#1                     awr                  18
-#2                     cog                  29
-#3                     com                  52
-#4                     mot                  28
-#5                     rrb                  34
+#1                     awr                  19
+#2                     cog                  31
+#3                     com                  60 
+#4                     mot                  31
+#5                     rrb                  36
 
 alldata <- alldata %>%
   mutate(treatment_t_score = case_when(SRS2_treatment_subscale == "awr" & treatment_RAW_score == 0 ~ '32',
@@ -365,7 +372,7 @@ alldata <- alldata %>%
                                        SRS2_treatment_subscale == "cog" & treatment_RAW_score == 27 ~ '84',
                                        SRS2_treatment_subscale == "cog" & treatment_RAW_score == 28 ~ '86',
                                        SRS2_treatment_subscale == "cog" & treatment_RAW_score == 29 ~ '88',
-                                       SRS2_treatment_subscale == "cog" & treatment_RAW_score == 30 ~ '90',
+                                       SRS2_treatment_subscale == "cog" & treatment_RAW_score >= 30 ~ '90',
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 0 ~ '37',
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 1 ~ '38',
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 2 ~ '39',
@@ -420,7 +427,7 @@ alldata <- alldata %>%
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 51 ~ '87',
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 52 ~ '88',
                                        SRS2_treatment_subscale == "com" & treatment_RAW_score == 53 ~ '89',
-                                       SRS2_treatment_subscale == "com" & treatment_RAW_score == 54 ~ '90',
+                                       SRS2_treatment_subscale == "com" & treatment_RAW_score >= 54 ~ '90',
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 0 ~ '37',
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 1 ~ '39',
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 2 ~ '41',
@@ -453,7 +460,7 @@ alldata <- alldata %>%
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 29 ~ '86',
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 30 ~ '87',
                                        SRS2_treatment_subscale == "mot" & treatment_RAW_score == 31 ~ '89',
-                                       SRS2_treatment_subscale == "mot" & treatment_RAW_score == 32 ~ '90',
+                                       SRS2_treatment_subscale == "mot" & treatment_RAW_score >= 32 ~ '90',
                                        SRS2_treatment_subscale == "rrb" & treatment_RAW_score == 0 ~ '40',
                                        SRS2_treatment_subscale == "rrb" & treatment_RAW_score == 1 ~ '42',
                                        SRS2_treatment_subscale == "rrb" & treatment_RAW_score == 2 ~ '43',
@@ -502,6 +509,12 @@ alldata <- alldata %>%
 aggregate(DSM5_RAW_score ~ DSM5_group, alldata, function(x) min(x))
 aggregate(DSM5_RAW_score ~ DSM5_group, alldata, function(x) max(x))
 
+#DSM5_group DSM5_RAW_score
+#1        RRB              0
+#2        SCI              7
+
+#1        RRB             36
+#2        SCI            140
 
 alldata <- alldata %>%
   mutate(DSM5_t_score = case_when(DSM5_group == "SCI" & DSM5_RAW_score == 0 ~ '35',
@@ -599,7 +612,7 @@ alldata <- alldata %>%
                                          DSM5_t_score >= 76 & DSM5_t_score <= 90 ~ 'Severe'))
 
 
-view(alldata)                                
+# view(alldata)                                
 
 #Export a CSV of the new data set...
 write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldata.csv", row.names = TRUE)
@@ -613,6 +626,10 @@ write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldata.c
 #Let's look at the difference between the two groups
 #WHY ARE YOU NOT WORKING because dbl not num. import the exxported dataset and change dbl to num
 
+# change total_t_score to numeric from dbl
+alldata <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data/alldata.csv", 
+                    col_types = cols(treatment_t_score = col_number()))
+
 alldata %>% 
   group_by(Group_Status) %>%
   summarise(mean(total_t_score), sd(total_t_score))
@@ -620,23 +637,24 @@ alldata %>%
 # A tibble: 2 × 3
 #Group_Status `mean(total_t_score)` `sd(total_t_score)`
 #<chr>                        <dbl>               <dbl>
-#  1 ASC                      72.5                7.85
-#2 TD                         50.3                6.01
+#  1 ASC                      77.9                8.59
+#2 TD                         52.6                9.32
 
 #Average ASC in the moderate autistic traits category, average TD in the within normal limits category
 
 #Much lower empathy scores for the ASC group compared to the TD group Let's have a look at this with a t test
-ASC_SRS2_mean <- rnorm(30, mean = 72.5, sd = 7.85)
-TD_SRS2_mean <- rnorm(29, mean = 50.3, sd = 6.01)
+ASC_SRS2_mean <- rnorm(60, mean = 77.9, sd = 8.59)
+TD_SRS2_mean <- rnorm(59, mean = 52.6, sd = 9.32)
 t.test(ASC_SRS2_mean, TD_SRS2_mean, var.equal = TRUE) 
 ##OUTPUT##
+
 #Two Sample t-test
 
 #data:  ASC_SRS2_mean and TD_SRS2_mean
-#t = 13.375, df = 57, p-value < 2.2e-16
+#t = 14.687, df = 117, p-value < 2.2e-16
 #alternative hypothesis: true difference in means is not equal to 0
 #95 percent confidence interval:
-#  19.20707 25.97127
+#  21.96013 28.80553
 #sample estimates:
 #  mean of x mean of y 
-#73.58801  50.99884 
+#78.55883  53.17600 
