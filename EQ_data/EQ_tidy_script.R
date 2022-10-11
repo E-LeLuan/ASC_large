@@ -200,9 +200,24 @@ alldata %>%
   group_by(Group_Status) %>%
   summarise(mean(EQ_score), sd(EQ_score))
 
+#Group_Status `mean(EQ_score)` `sd(EQ_score)`
+#<chr>                   <dbl>          <dbl>
+#1 ASC                      23.7           10.4
+#2 TD                       46.2           13.4
+
+
 #Much lower empathy scores for the ASC group compared to the TD group Let's have a look at this with a t test
 ASC_EQ_mean <- rnorm(60, mean = 23.7, sd = 10.4)
 TD_EQ_mean <- rnorm(60, mean = 46.2, sd = 13.4)
 t.test(ASC_EQ_mean, TD_EQ_mean, var.equal = TRUE)
 
+#Two Sample t-test
 
+#data:  ASC_EQ_mean and TD_EQ_mean
+#t = -9.3236, df = 118, p-value = 7.998e-16
+#alternative hypothesis: true difference in means is not equal to 0
+#95 percent confidence interval:
+#  -27.56016 -17.90386
+#sample estimates:
+#  mean of x mean of y 
+#   24.92264  47.65465 
