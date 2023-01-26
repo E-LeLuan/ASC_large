@@ -256,6 +256,24 @@ qqnorm(residuals(modelRT3ms))
 qqline(residuals(modelRT3ms))
 descdist(alldata_Pred_RT$RT3ms)
 
+#Now Let's add in individual differences
+#Import Individual difference measures
+Reduced_IDs_Pred <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Reduced_IDs_Pred.csv")
+#View(Reduced_IDs_Pred)
+
+all_data_join <- inner_join(alldata_Pred_RT, Reduced_IDs_Pred, by = "participant")
+
+View(all_data_join)
+
+# Scale the ID measures...
+all_data_join$total_RAW_score <- scale(all_data_join$total_RAW_score)
+all_data_join$total_t_score <- scale(all_data_join$total_t_score)
+all_data_join$EQ_score <- scale(all_data_join$EQ_score)
+
+# Model including covariates
+model_alldatacov_RT3ms <- lmer(RT3ms ~ condition_number + total_RAW_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT3ms)
+
 
 #NO significant difference in reading the predictive information, this is good as it suggests their are no length, frequency,
 # or other effects of our manipulation.
@@ -334,7 +352,9 @@ qqnorm(residuals(modelRT4ms))
 qqline(residuals(modelRT4ms))
 descdist(alldata_Pred_RT$RT4ms)
 
-
+# Model including covariates
+model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_RAW_score + EQ_score + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT4ms)
 
 
 
@@ -404,6 +424,11 @@ summary(modelRT5msGS)
 # It Worked!!!!!
 
 
+# Model including covariates
+model_alldatacov_RT5ms <- lmer(RT5ms ~ condition_number + total_RAW_score + EQ_score + 
+                                 (1 + condition_number | participant) +  (1 + condition_number | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT5ms)
+
 
 #All the data for this model looks pretty normal.
 check_model(modelRT5ms)
@@ -461,7 +486,6 @@ alldata_Pred_RT %>%
   summarise(mean(TT), sd(TT))
 
 
-
 # Model assuming normality of residuals maximal structure
 #Maximal model with no singularity of fit error drops item random effects
 # SIngular fit error no matter what, seperate analysis by participants and by items the items model has singular fit and participant model fits
@@ -470,28 +494,33 @@ modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), 
 summary(modelTT1)
 
 #Have a lookat outliers as that standard deviation is crazy out!
-ggbetweenstats(alldata_Pred_RT, condition_number, TT, outlier.tagging = TRUE)
-Q <- quantile(alldata_Pred_RT$TT, probs=c(.25, .75), na.rm = FALSE)
+#ggbetweenstats(alldata_Pred_RT, condition_number, TT, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(alldata_Pred_RT$TT)
+iqr <- IQR(all_data_join$TT)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(alldata_Pred_RT, alldata_Pred_RT$TT > (Q[1] - 2.0*iqr) & alldata_Pred_RT$TT < (Q[2]+2.0*iqr))
-ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
+eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
+#ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 
 eliminated %>% 
   group_by(condition_number) %>%
   summarise(mean(TT), sd(TT))
 
-modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
+modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 + condition_number | item_number), data = eliminated,
                  REML = TRUE) 
 summary(modelTT1)
 
+
 #add in group_stATUS and shows neither group is responsible for the effect suggesting similar processing mechanisms for ASC and TD.
 #Maximal model with no singularity of fit error drops item random effects
-modelTTGS <- lmer(TT ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,
+modelTTGS <- lmer(TT ~ condition_number + Group_Status + (1 | participant) + (1 + condition_number | item_number), data = eliminated,
                   REML = TRUE) 
 summary(modelTTGS)
+
+# Model including covariates
+model_alldatacov_TT <- lmer(TT ~ condition_number + total_RAW_score + EQ_score + (1 | participant) +  (1 + condition_number | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_TT)
 
 #All the data for this model looks pretty normal.
 check_model(modelTT1)

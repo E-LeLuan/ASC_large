@@ -202,7 +202,7 @@ alldata <- alldata %>% mutate(SRS2_tidy = case_when
 alldata <- alldata %>% group_by(participant) %>%
   mutate(total_RAW_score = sum(SRS2_tidy))
 
-view(alldata)
+#view(alldata)
 
 # Now individual treatment subscale raw scores
 
@@ -612,10 +612,10 @@ alldata <- alldata %>%
                                          DSM5_t_score >= 76 & DSM5_t_score <= 90 ~ 'Severe'))
 
 
-# view(alldata)                                
+ view(alldata)                                
 
 #Export a CSV of the new data set...
-write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldata.csv", row.names = TRUE)
+write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldataSRS2.csv", row.names = TRUE)
 
 # All data extracted and new CSV created called all data created. WHOOP WHOOP!!!!!!!!!
 

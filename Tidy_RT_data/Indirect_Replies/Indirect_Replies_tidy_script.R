@@ -278,7 +278,7 @@ descdist(alldata_IR_RT$RT2ms)
 
 #Now Let's add in individual differences
 #Import Individual difference measures
-Reduced_IDs_IR <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Reduced_IDs_IR.csv")
+Reduced_IDs_IR <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Reduced_IDs_IR.csv")
 View(Reduced_IDs_IR)
 
 all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs_IR, by = "participant")
