@@ -11,6 +11,7 @@ library(performance)
 library(see)
 library(sjPlot)
 library(ggrepel)
+library(ggstatsplot)
 
 set.seed(42)
 
@@ -187,7 +188,7 @@ alldata_Pred_RT <- alldata_Pred_RT%>%
 alldata_Pred_RT <- alldata_Pred_RT%>%
   mutate(RT6ms = RT6*1000)
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
-
+view(alldata_Pred_RT)
 # Let's have a look at region 3 Which is our Prediction region
 
 #view(alldata_Pred_RT)
@@ -420,7 +421,7 @@ alldata_Pred_RT <- alldata_Pred_RT %>% group_by(participant) %>%
 #IT WORKED!!!!!
 #Violin plots
 alldata_Pred_RT %>% 
-  ggplot(aes(x = condition_number, y = RT5ms, colour = condition_number)) + ggtitle("Reaction Time Region 4") +
+  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Prediction") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
@@ -429,7 +430,7 @@ alldata_Pred_RT %>%
 
 #Boxplt
 alldata_Pred_RT %>% 
-  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time Region 4") +
+  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Prediction") +
   geom_boxplot()+  
   geom_jitter(alpha = .2, width = .1) +
@@ -438,7 +439,7 @@ alldata_Pred_RT %>%
 
 #Violin plots by group_status
 alldata_Pred_RT %>% 
-  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
+  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Prediction") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
@@ -447,7 +448,7 @@ alldata_Pred_RT %>%
 
 #Boxplt
 alldata_Pred_RT %>% 
-  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
+  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Prediction") +
   geom_boxplot()+  
   geom_jitter(alpha = .2, width = .1) +
@@ -468,38 +469,57 @@ modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), 
                 REML = TRUE) 
 summary(modelTT1)
 
+#Have a lookat outliers as that standard deviation is crazy out!
+ggbetweenstats(alldata_Pred_RT, condition_number, TT, outlier.tagging = TRUE)
+Q <- quantile(alldata_Pred_RT$TT, probs=c(.25, .75), na.rm = FALSE)
+#view(Q)
+iqr <- IQR(alldata_Pred_RT$TT)
+up <-  Q[2]+2.0*iqr # Upper Range  
+low<- Q[1]-2.0*iqr # Lo
+eliminated<- subset(alldata_Pred_RT, alldata_Pred_RT$TT > (Q[1] - 2.0*iqr) & alldata_Pred_RT$TT < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
+
+eliminated %>% 
+  group_by(condition_number) %>%
+  summarise(mean(TT), sd(TT))
+
+modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
+                 REML = TRUE) 
+summary(modelTT1)
 
 #add in group_stATUS and shows neither group is responsible for the effect suggesting similar processing mechanisms for ASC and TD.
 #Maximal model with no singularity of fit error drops item random effects
-modelTTGS <- lmer(TT ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = alldata_Pred_RT,
+modelTTGS <- lmer(TT ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,
                   REML = TRUE) 
 summary(modelTTGS)
 
 #All the data for this model looks pretty normal.
-check_model(modelTT)
-qqnorm(residuals(modelTT))
-qqline(residuals(modelTT))
+check_model(modelTT1)
+qqnorm(residuals(modelTT1))
+qqline(residuals(modelTT1))
 descdist(alldata_Pred_RT$TT)
 
 # Seperate analysis based on group
 # Create subset data lists
-ASC_Group <- filter(alldata_Pred_RT, Group_Status == "ASC")
-TD_Group <- filter(alldata_Pred_RT, Group_Status == "TD")
+ASC_Group <- filter(eliminated, Group_Status == "ASC")
+TD_Group <- filter(eliminated, Group_Status == "TD")
 
+#Significant
 modelTT_TD <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), TD_Group) 
 summary(modelTT_TD)                   
 
+#Not significant suggesrs TD driving the effect on TT
 modelTT_ASC <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), ASC_Group) 
 summary(modelTT_ASC) 
 
-# TT anaylsis is CRAPOLA just can't get that bad boy to work
+# Removed outliers it works now!!!!!
 
 
 
 
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
 #With Gamma we can include more random effects including maximal structure with random slopes for particiapnt and item 
-
+#check for 0's because gamma doesnt like 0s
 sum(is.na(alldata_Pred_RT$RT1ms))
 sum(is.na(alldata_Pred_RT$RT2ms))
 sum(is.na(alldata_Pred_RT$RT3ms))
@@ -507,7 +527,7 @@ sum(is.na(alldata_Pred_RT$RT4ms))
 sum(is.na(alldata_Pred_RT$RT5ms))
 sum(is.na(alldata_Pred_RT$RT6ms))
 
-#GAMMA 
+#GAMMA supports a more complex structure including random effects but removes any significant effects
 #Error in (function (fr, X, reTrms, family, nAGQ = 1L, verbose = 0L, maxit = 100L,  : 
 #                      PIRLS loop resulted in NaN value
 #Keep getting error why???? Works if i change link from inverse to log
@@ -522,7 +542,7 @@ GammaRT4ms <- glmer(RT4ms ~ condition_number + (1 + condition_number | participa
                     family = Gamma (link = "log"), data = alldata_Pred_RT)
 summary(GammaRT4ms)
 
-#Region 5 significant unfacilitated red slower than facilitated
+#Region 5 significant unfacilitated read slower than facilitated
 GammaRT5ms <- glmer(RT5ms ~ condition_number + (1 + condition_number | participant) + (1 + condition_number | item_number), 
                     family = Gamma (link = "log"), data = alldata_Pred_RT)
 summary(GammaRT5ms)
@@ -533,17 +553,17 @@ GammaRTT <- glmer(TT ~ condition_number + (1 + condition_number | participant) +
 summary(GammaRTT)
 
 #Export a CSV of the new data set...
-write.csv(alldata_Pred_RT,"//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Prediction\\alldata_Pred_RT.csv", row.names = TRUE)
+write.csv(alldata_Pred_RT,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction\\alldata_Pred_RT.csv", row.names = TRUE)
 
 #Import ID's
-alldata_Pred_RT <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Prediction/alldata_Pred_RT.csv")
-alldata_EQ <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_small/EQ_data/alldata_EQ.csv")
-alldata_SRS2 <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_small/SRS2_data/alldata_SRS2.csv")
+alldata_Pred_RT <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction/alldata_Pred_RT.csv")
+alldata_EQ <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/EQ_data/alldata_EQ.csv")
+alldata_SRS2 <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data/alldata_SRS2.csv")
 
 #view(alldata_EQ)
 #view(alldata_SRS2)
 
 all_data_join <- inner_join(alldata_Pred_RT, alldata_EQ, by = "participant")
 all_data_join <- inner_join(all_data_join, alldata_SRS2, by = "participant")
-#view(all_data_join)
+view(all_data_join)
 
