@@ -201,23 +201,23 @@ alldata_IR_RT <- alldata_IR_RT%>%
 
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
 
-# Let's have a look at region 2 Which is our Indirect_Replies manipulation region
+# Let's have a look at region 2 Which is a nothing region
 # Postitive, negative, neutral
 
 #view(alldata_IR_RT)
 
-alldata_IR_RT %>% 
-  group_by(condition_number) %>%
-  summarise(mean(RT2ms), sd(RT2ms))
+#alldata_IR_RT %>% 
+#  group_by(condition_number) %>%
+#  summarise(mean(RT2ms), sd(RT2ms))
 
 #Violin plots
-alldata_IR_RT %>% 
-  ggplot(aes(x = condition_number, y = RT2ms, colour = condition_number)) + ggtitle("Reaction Time Region 2") +
-  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
-  geom_violin() +
-  geom_jitter(alpha = .2, width = .1) +
-  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
-  guides(scale = none)
+#alldata_IR_RT %>% 
+#  ggplot(aes(x = condition_number, y = RT2ms, colour = condition_number)) + ggtitle("Reaction Time Region 2") +
+#  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
+#  geom_violin() +
+#  geom_jitter(alpha = .2, width = .1) +
+#  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
+#  guides(scale = none)
 
 #Boxplt
 #alldata_IR_RT %>% 
@@ -229,13 +229,13 @@ alldata_IR_RT %>%
 #  guides(scale = none)
 
 #Violin plots by group_status
-alldata_IR_RT %>% 
-  ggplot(aes(x = condition_number, y = RT2ms, colour = Group_Status)) + ggtitle("Reaction Time Region 2") +
-  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
-  geom_violin() +
-  geom_jitter(alpha = .2, width = .1) +
-  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
-  guides(scale = FALSE)
+#alldata_IR_RT %>% 
+#  ggplot(aes(x = condition_number, y = RT2ms, colour = Group_Status)) + ggtitle("Reaction Time Region 2") +
+#  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
+#  geom_violin() +
+#  geom_jitter(alpha = .2, width = .1) +
+#  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
+#  guides(scale = FALSE)
 
 #Boxplt
 #alldata_IR_RT %>% 
@@ -261,20 +261,20 @@ alldata_IR_RT %>%
 #  summarise(mean(RT2ms), sd(RT2ms))
 # Model assuming normality of residuals maximal structure
 #Maximal model with no singularity of fit error drops participant and item random effects
-modelRT2ms <- lmer(RT2ms ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
-                   REML = TRUE) 
-summary(modelRT2ms)
+#modelRT2ms <- lmer(RT2ms ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
+#                   REML = TRUE) 
+#summary(modelRT2ms)
 
-model.nullRT2ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
+#model.nullRT2ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
 
-anova(modelRT2ms,model.nullRT2ms)
+#anova(modelRT2ms,model.nullRT2ms)
 
 
 #All the data for this model looks pretty normal.
-check_model(modelRT2ms)
-qqnorm(residuals(modelRT2ms))
-qqline(residuals(modelRT2ms))
-descdist(alldata_IR_RT$RT2ms)
+#check_model(modelRT2ms)
+#qqnorm(residuals(modelRT2ms))
+#qqline(residuals(modelRT2ms))
+#descdist(alldata_IR_RT$RT2ms)
 
 #Now Let's add in individual differences
 #Import Individual difference measures
@@ -292,8 +292,8 @@ all_data_join$total_RAW_score <- scale(all_data_join$total_RAW_score)
 all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 
 # Model including covariates
-model_alldatacov_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
-summary(model_alldatacov_RT2ms)
+#model_alldatacov_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+#summary(model_alldatacov_RT2ms)
 
 # Let's have a look at region 3 Which is our Indirect_Replies region
 
@@ -302,7 +302,6 @@ summary(model_alldatacov_RT2ms)
 alldata_IR_RT%>% 
   group_by(condition_number) %>%
   summarise(mean(RT3ms), sd(RT3ms))
-
 
 #Violin plots
 alldata_IR_RT %>% 
@@ -549,18 +548,18 @@ alldata_IR_RT %>%
 #  guides(scale = none)
 
 #Descriptives
-alldata_IR_RT %>% 
+all_data_join %>% 
   group_by(condition_number) %>%
   summarise(mean(RT5ms), sd(RT5ms))
 
 #Have a lookat outliers as that standard deviation is crazy out!
-ggbetweenstats(alldata_IR_RT, condition_number, RT5ms, outlier.tagging = TRUE)
-Q <- quantile(alldata_IR_RT$RT5ms, probs=c(.25, .75), na.rm = FALSE)
+ggbetweenstats(all_data_join, condition_number, RT5ms, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$RT5ms, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(alldata_IR_RT$RT5ms)
+iqr <- IQR(all_data_join$RT5ms)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(alldata_IR_RT, alldata_IR_RT$RT5ms > (Q[1] - 2.0*iqr) & alldata_IR_RT$RT5ms < (Q[2]+2.0*iqr))
+eliminated<- subset(all_data_join, all_data_join$RT5ms > (Q[1] - 2.0*iqr) & all_data_join$RT5ms < (Q[2]+2.0*iqr))
 ggbetweenstats(eliminated, condition_number, RT5ms, outlier.tagging = TRUE) 
 
 eliminated %>% 
@@ -588,6 +587,11 @@ descdist(alldata_IR_RT$RT5ms)
 modelRT5msGS <- lmer(RT5ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,
                    REML = TRUE) 
 summary(modelRT5msGS)
+
+#Lets add ID's
+# Model including covariates
+model_alldatacov_RT5ms <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_RT5ms)
 
 
 ## Let's have a look at total reading time across all regions
@@ -646,31 +650,31 @@ modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), d
                 REML = TRUE) 
 summary(modelTT)
 
-model.nullTT <- lmer(TT ~ (1 | participant) + (1 + condition_number | item_number), alldata_IR_RT) 
+model.nullTT <- lmer(TT ~ (1 | participant) + (1 + condition_number | item_number), all_data_join) 
 
 anova(model.nullTT, modelTT)
 
 #Removing outliers removes singular fit error
-ggbetweenstats(alldata_IR_RT, condition_number, TT, outlier.tagging = TRUE)
-Q <- quantile(alldata_IR_RT$TT, probs=c(.25, .75), na.rm = FALSE)
+#ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
+#Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(alldata_IR_RT$TT)
-up <-  Q[2]+2.0*iqr # Upper Range  
-low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(alldata_IR_RT, alldata_IR_RT$TT > (Q[1] - 2.0*iqr) & alldata_IR_RT$TT < (Q[2]+2.0*iqr))
-ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
+#iqr <- IQR(all_data_join$TT)
+#up <-  Q[2]+2.0*iqr # Upper Range  
+#low<- Q[1]-2.0*iqr # Lo
+#eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
+#ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 
-eliminated %>% 
-  group_by(condition_number) %>%
-  summarise(mean(RT5ms), sd(RT5ms))
+#eliminated %>% 
+ # group_by(condition_number) %>%
+  #summarise(mean(TT), sd(TT))
 # eliminated model
-modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
-                REML = TRUE) 
-summary(modelTT)
+#modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
+#                REML = TRUE) 
+#summary(modelTT)
 
-model.nullTT <- lmer(TT ~ (1 | participant) + (1 | item_number), eliminated) 
+#model.nullTT <- lmer(TT ~ (1 | participant) + (1 | item_number), eliminated) 
 
-anova(modelTT,model.nullTT)
+#anova(modelTT,model.nullTT)
 
 
 #All the data for this model looks pretty normal.
@@ -678,6 +682,11 @@ check_model(modelTT)
 qqnorm(residuals(modelTT))
 qqline(residuals(modelTT))
 descdist(alldata_IR_RT$TT)
+
+#Lets add ID's
+# Model including covariates
+model_alldatacov_TT <- lmer(TT ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_TT)
 
 
 
@@ -695,14 +704,14 @@ GammaRT4ms <- glmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_num
 summary(GammaRT4ms)
 #Failed to converge lets try removing outliers
 #Removing outliers removes singular fit error
-#ggbetweenstats(alldata_IR_RT, condition_number, RT4ms, outlier.tagging = TRUE)
-Q <- quantile(alldata_IR_RT$RT4ms, probs=c(.25, .75), na.rm = FALSE)
+#ggbetweenstats(all_data_join, condition_number, RT4ms, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$RT4ms, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(alldata_IR_RT$RT4ms)
+iqr <- IQR(all_data_join$RT4ms)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(alldata_IR_RT, alldata_IR_RT$RT4ms > (Q[1] - 2.0*iqr) & alldata_IR_RT$RT4ms < (Q[2]+2.0*iqr))
-#ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
+eliminated<- subset(all_data_join, all_data_join$RT4ms > (Q[1] - 2.0*iqr) & all_data_join$RT4ms < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
 
 GammaRT4ms <- glmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), 
                     family = Gamma (link = "log"), data = eliminated)
@@ -721,7 +730,7 @@ iqr <- IQR(alldata_IR_RT$RT5ms)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
 eliminated<- subset(alldata_IR_RT, alldata_IR_RT$RT5ms > (Q[1] - 2.0*iqr) & alldata_IR_RT$RT5ms < (Q[2]+2.0*iqr))
-#ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
+ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
 
 GammaRT5ms <- glmer(RT5ms ~ condition_number + (1 | participant) + (1 | item_number), 
                     family = Gamma (link = "log"), data = eliminated)
@@ -729,19 +738,19 @@ summary(GammaRT5ms)
 
 
 GammaRTT <- glmer(TT ~ condition_number + (1 | participant) + (1 | item_number), 
-                  family = Gamma (link = "log"), data = alldata_IR_RT)
+                  family = Gamma (link = "log"), data = all_data_join)
 summary(GammaRTT)
 
 #Failed to converge lets try removing outliers
 #Removing outliers removes singular fit error
 #ggbetweenstats(alldata_IR_RT, condition_number, RT4ms, outlier.tagging = TRUE)
-Q <- quantile(alldata_IR_RT$TT, probs=c(.25, .75), na.rm = FALSE)
+Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(alldata_IR_RT$TT)
+iqr <- IQR(all_data_join$TT)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(alldata_IR_RT, alldata_IR_RT$TT > (Q[1] - 2.0*iqr) & alldata_IR_RT$TT < (Q[2]+2.0*iqr))
-#ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
+eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 
 GammaTT <- glmer(TT ~ condition_number + (1 | participant) + (1 | item_number), 
                  family = Gamma (link = "log"), data = eliminated)
