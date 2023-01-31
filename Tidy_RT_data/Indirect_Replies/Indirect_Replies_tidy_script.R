@@ -287,21 +287,14 @@ all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs_IR, by = "participant")
 View(all_data_join)
 
 # Scale the ID measures...
-all_data_join$SRS_total_score_raw <- scale(all_data_join$SRS_total_score_raw)
-all_data_join$SRS_total_score_t <- scale(all_data_join$SRS_total_score_t)
-all_data_join$EQ <- scale(all_data_join$EQ)
-all_data_join$Total_RAN <- scale(all_data_join$Total_RAN)
-all_data_join$Total_reading_cluster <- scale(all_data_join$Total_reading_cluster)
+all_data_join$total_t_score <- scale(all_data_join$total_t_score)
+all_data_join$total_RAW_score <- scale(all_data_join$total_RAW_score)
+all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 
 # Model including covariates
-model_alldatacov_RT2ms <- lmer(RT2ms ~ Total_reading_cluster + SRS_total_score_t + EQ + Total_RAN + condition_number + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+model_alldatacov_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT2ms)
 
-#Remove RAN
-model_alldatacov_RT2ms_noRAN <- lmer(RT2ms ~ Total_reading_cluster + SRS_total_score_t + EQ + condition_number + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
-summary(model_alldatacov_RT2ms_noRAN)
-
-# Let's have a look at region 3 Which is our Indirect_Replies region
 # Let's have a look at region 3 Which is our Indirect_Replies region
 
 #view(alldata_IR_RT)
@@ -350,18 +343,40 @@ alldata_IR_RT %>%
 
 # Model assuming normality of residuals maximal structure
 #Maximal model with no singularity of fit error drops participant and item random effects
-modelRT3ms <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
+modelRT3ms <- lmer(RT3ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = all_data_join,
                    REML = TRUE) 
 summary(modelRT3ms)
 
-model.nullRT3ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
+#model.nullRT3ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), all_data_join) 
+
+#anova(modelRT3ms,model.nullRT3ms)
+
+#Singularity of fit error lets try with removed outliers
+#ggbetweenstats(all_data_join, condition_number, RT2ms, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$RT3ms, probs=c(.25, .75), na.rm = FALSE)
+#view(Q)
+iqr <- IQR(all_data_join$RT3ms)
+up <-  Q[2]+2.0*iqr # Upper Range  
+low<- Q[1]-2.0*iqr # Lo
+eliminated<- subset(all_data_join, all_data_join$RT3ms > (Q[1] - 2.0*iqr) & all_data_join$RT3ms < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, RT3ms, outlier.tagging = TRUE) 
+
+#much better SD's
+eliminated %>% 
+  group_by(condition_number) %>%
+  summarise(mean(RT3ms), sd(RT3ms))
+
+modelRT3ms <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
+                   REML = TRUE) 
+summary(modelRT3ms)
+
+model.nullRT3ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), eliminated) 
 
 anova(modelRT3ms,model.nullRT3ms)
 
-#add in group_stATUS
-#modelRT3msGS <- lmer(RT3ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
-#REML = TRUE) 
-#summary(modelRT3msGS)
+#add in group_stATUS no effect of group
+modelRT3msGS <- lmer(RT3ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,REML = TRUE) 
+summary(modelRT3msGS)
 
 #All the data for this model looks pretty normal.
 check_model(modelRT3ms)
@@ -371,13 +386,13 @@ descdist(alldata_IR_RT$RT3ms)
 
 #Now Let's add in individual differences
 # Model including covariates
-model_alldatacov_RT3ms <- lmer(RT3ms ~ condition_number + Total_reading_cluster + SRS_total_score_t + EQ + Total_RAN + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+model_alldatacov_RT3ms <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT3ms)
 
-# Let's have a look at region 4 Which is our critical/ Question region
 
+# Let's have a look at region 4 Which is our critical/ Question region
 #Violin plots
-alldata_IR_RT %>% 
+all_data_join %>% 
   ggplot(aes(x = condition_number, y = RT4ms, colour = condition_number)) + ggtitle("Reaction Time Region 4") +
   labs(y = "Reading time in seconds", x = "Indirect_Replies") +
   geom_violin() +
@@ -436,18 +451,40 @@ alldata_IR_RT %>%
 
 #model.nullR4 <- lmer(RT4ms ~ (1 + condition_number | participant) + (1 + condition_number | item_number), alldata_IR_RT) 
 #Maximal model with no singularity of fit error drops item random effects
-modelRT4ms <- lmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
+#modelRT4ms <- lmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), data = all_data_join,
+#                   REML = TRUE) 
+#summary(modelRT4ms)
+
+#model.nullRT4ms <- lmer(RT4ms ~ (1 | participant) + (1 | item_number), all_data_join) 
+
+#anova(modelRT4ms,model.nullRT4ms)
+
+#Singularity of fit error lets try with removed outliers
+#ggbetweenstats(all_data_join, condition_number, RT2ms, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$RT4ms, probs=c(.25, .75), na.rm = FALSE)
+#view(Q)
+iqr <- IQR(all_data_join$RT4ms)
+up <-  Q[2]+2.0*iqr # Upper Range  
+low<- Q[1]-2.0*iqr # Lo
+eliminated<- subset(all_data_join, all_data_join$RT4ms > (Q[1] - 2.0*iqr) & all_data_join$RT4ms < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
+
+#much better SD's
+eliminated %>% 
+  group_by(condition_number) %>%
+  summarise(mean(RT4ms), sd(RT4ms))
+
+modelRT4ms <- lmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
                    REML = TRUE) 
 summary(modelRT4ms)
 
-model.nullRT4ms <- lmer(RT4ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
+model.nullRT4ms <- lmer(RT4ms ~ (1 | participant) + (1 | item_number), eliminated) 
 
 anova(modelRT4ms,model.nullRT4ms)
 
-
 #add in group_stATUS and shows neither group is responsible for the effect suggesting similar processing.
 #Maximal model with no singularity of fit error drops item random effects
-modelRT4msGS <- lmer(RT4ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
+modelRT4msGS <- lmer(RT4ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,
                      REML = TRUE) 
 summary(modelRT4msGS)
 
@@ -461,16 +498,16 @@ descdist(alldata_IR_RT$RT4ms)
 
 #Lets add ID's
 # Model including covariates
-model_alldatacov_RT4ms <- lmer(RT4ms ~ Total_reading_cluster + SRS_total_score_t + EQ + Total_RAN + condition_number + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
 # The difference between negative and positive driving the effect
-positive <- c(rnorm(60, mean = 1807, sd = 952))
-negative <- c(rnorm(60, mean = 1650, sd = 952))
-Neutral <- c(rnorm(60, mean = 1742, sd = 1511))
-t.test(positive, negative, paired = TRUE)
-t.test(Neutral, negative, paired = TRUE)
-t.test(positive, Neutral, paired = TRUE)
+#positive <- c(rnorm(120, mean = 1601, sd = 658))
+#negative <- c(rnorm(120, mean = 1513, sd = 637))
+#Neutral <- c(rnorm(120, mean = 1491, sd = 706))
+#t.test(positive, negative, paired = TRUE)
+#t.test(Neutral, negative, paired = TRUE)
+#t.test(positive, Neutral, paired = TRUE)
 
 
 # Let's have a look at region 5 Which is our post-critical/ Reply region
@@ -547,17 +584,22 @@ qqnorm(residuals(modelRT5ms))
 qqline(residuals(modelRT5ms))
 descdist(alldata_IR_RT$RT5ms)
 
+#include group status
+modelRT5msGS <- lmer(RT5ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = eliminated,
+                   REML = TRUE) 
+summary(modelRT5msGS)
+
 
 ## Let's have a look at total reading time across all regions
 
-alldata_IR_RT <- alldata_IR_RT %>% group_by(participant) %>%
+all_data_join <- all_data_join %>% group_by(participant) %>%
   mutate(TT = (RT1ms + RT2ms + RT3ms + RT4ms + RT5ms + RT6ms))
 
 #view(alldata_IR_RT)
 #IT WORKED!!!!!
 #Violin plots
-alldata_IR_RT %>% 
-  ggplot(aes(x = condition_number, y = RT5ms, colour = condition_number)) + ggtitle("Reaction Time Region 4") +
+all_data_join %>% 
+  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Indirect_Replies") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
@@ -566,7 +608,7 @@ alldata_IR_RT %>%
 
 #Boxplt
 #alldata_IR_RT %>% 
-#  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time Region 4") +
+#  ggplot(aes(x = condition_number, y = TT, colour = condition_number)) + ggtitle("Reaction Time TT") +
 #  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
 #  geom_boxplot()+  
 #  geom_jitter(alpha = .2, width = .1) +
@@ -574,8 +616,8 @@ alldata_IR_RT %>%
 #  guides(scale = none)
 
 #Violin plots by group_status
-alldata_IR_RT %>% 
-  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
+all_data_join %>% 
+  ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time TT") +
   labs(y = "Reading time in seconds", x = "Indirect_Replies") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
@@ -592,7 +634,7 @@ alldata_IR_RT %>%
 #  guides(scale = none)
 
 #Descriptives
-alldata_IR_RT %>% 
+all_data_join %>% 
   group_by(condition_number) %>%
   summarise(mean(TT), sd(TT))
 
@@ -600,7 +642,7 @@ alldata_IR_RT %>%
 
 # Model assuming normality of residuals maximal structure
 #SINGULARITY OF FIT ISSUE HERE
-modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
+modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = all_data_join,
                 REML = TRUE) 
 summary(modelTT)
 
