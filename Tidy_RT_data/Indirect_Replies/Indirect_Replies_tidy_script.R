@@ -687,11 +687,11 @@ descdist(alldata_IR_RT$TT)
 #Nothing significant with Gamma (if i did it right not sure if after family = gamma i shouldn't have (link = "log") or (link = "inverse")) 
 
 GammaRT3ms <- glmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), 
-                    family = Gamma (link = "log"), data = alldata_IR_RT)
+                    family = Gamma (link = "log"), data = all_data_join)
 summary(GammaRT3ms)
 
 GammaRT4ms <- glmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), 
-                    family = Gamma (link = "log"), data = alldata_IR_RT)
+                    family = Gamma (link = "log"), data = all_data_join)
 summary(GammaRT4ms)
 #Failed to converge lets try removing outliers
 #Removing outliers removes singular fit error
@@ -749,5 +749,5 @@ summary(GammaTT)
 
 
 #Export a CSV of the new data set...
-#write.csv(alldata_IR_RT,"//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT.csv", row.names = TRUE)
+#write.csv(alldata_IR_RT,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT.csv", row.names = TRUE)
 

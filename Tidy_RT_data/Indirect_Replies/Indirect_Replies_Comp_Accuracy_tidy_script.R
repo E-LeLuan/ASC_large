@@ -53,10 +53,10 @@ alldata_IR_RT_comp <- alldata_IR_RT_comp %>% group_by (participant) %>%
 
 view(alldata_IR_RT_comp)
 
-#write to CSV file location on laptop is .... C:\Users\eliza\Desktop\ASC_small\Tidy_RT_data
-#write.csv(alldata_IR_RT_comp,"//C:/Users/eliza/Desktop/ASC_small/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT_comp.csv", row.names = TRUE)
-#C:\Users\eliza\Desktop\ASC_small\Tidy_RT_data
-write.csv (alldata_IR_RT_comp,"//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT_comp.csv", row.names = TRUE)
+#write to CSV file location on laptop is .... C:\Users\eliza\Desktop\ASC_large\Tidy_RT_data
+#write.csv(alldata_IR_RT_comp,"//C:/Users/eliza/Desktop/ASC_large/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT_comp.csv", row.names = TRUE)
+#C:\Users\eliza\Desktop\ASC_large\Tidy_RT_data
+#write.csv (alldata_IR_RT_comp,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT_comp.csv", row.names = TRUE)
 
 # now lets just get one number of accuracy to upload to spreadsheet
 
@@ -76,5 +76,5 @@ IR_accuracyimp <- IR_accuracy %>%
   distinct(participant, total_comp, total_perc, .keep_all = TRUE)
 view(IR_accuracyimp)
 
-write.csv (IR_accuracyimp,"//nask.man.ac.uk/home$/Desktop/ASC_small/Tidy_RT_data/Indirect_Replies\\IR_accuracyimp", row.names = TRUE)
+#write.csv (IR_accuracyimp,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Indirect_Replies\\IR_accuracyimp", row.names = TRUE)
 
