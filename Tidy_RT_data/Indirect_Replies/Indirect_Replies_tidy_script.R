@@ -278,7 +278,7 @@ alldata_IR_RT <- alldata_IR_RT%>%
 
 #Now Let's add in individual differences
 #Import Individual difference measures
-Reduced_IDs_IR <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Reduced_IDs_IR.csv")
+Reduced_IDs_IR <- read_csv("Tidy_RT_data/Indirect_Replies/Reduced_IDs_IR.csv")
 View(Reduced_IDs_IR)
 
 all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs_IR, by = "participant")
@@ -345,6 +345,12 @@ alldata_IR_RT %>%
 modelRT3ms <- lmer(RT3ms ~ condition_number + Group_Status + (1 | participant) + (1 | item_number), data = all_data_join,
                    REML = TRUE) 
 summary(modelRT3ms)
+
+# count the ASC TD indices
+count1 <- all_data_join %>% group_by(Group_Status,overall_clinical_range) %>% 
+  summarise(total_count=n(),.groups = 'drop') %>%
+  as.data.frame()
+view(count1)
 
 #model.nullRT3ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), all_data_join) 
 
