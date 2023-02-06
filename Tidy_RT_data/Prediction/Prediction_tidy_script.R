@@ -188,7 +188,7 @@ alldata_Pred_RT <- alldata_Pred_RT%>%
 alldata_Pred_RT <- alldata_Pred_RT%>%
   mutate(RT6ms = RT6*1000)
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
-view(alldata_Pred_RT)
+#view(alldata_Pred_RT)
 # Let's have a look at region 3 Which is our Prediction region
 
 #view(alldata_Pred_RT)
@@ -256,15 +256,14 @@ qqnorm(residuals(modelRT3ms))
 qqline(residuals(modelRT3ms))
 descdist(alldata_Pred_RT$RT3ms)
 
+
 #Now Let's add in individual differences
 #Import Individual difference measures
 Reduced_IDs_Pred <- read_csv("Tidy_RT_data/Prediction/Reduced_IDs_Pred.csv")
 #View(Reduced_IDs_Pred)
 
-
 all_data_join <- inner_join(alldata_Pred_RT, Reduced_IDs_Pred, by = "participant")
-
-View(all_data_join)
+#View(all_data_join)
 
 # Scale the ID measures...
 all_data_join$total_RAW_score <- scale(all_data_join$total_RAW_score)
@@ -330,9 +329,7 @@ alldata_Pred_RT %>%
 modelRT4ms <- lmer(RT4ms ~ condition_number + (1 + condition_number | participant) + (1 | item_number), data = alldata_Pred_RT,
                    REML = TRUE) 
 summary(modelRT4ms)
-
 model.nullRT4ms <- lmer(RT4ms ~ (1 + condition_number | participant) + (1 | item_number), alldata_Pred_RT) 
-
 anova(modelRT4ms,model.nullRT4ms)
 
 #add in group_stATUS and shows neither group is responsible for the effect suggesting similar processing.
@@ -409,9 +406,7 @@ alldata_Pred_RT %>%
 modelRT5ms <- lmer(RT5ms ~ condition_number + (1 + condition_number | participant) + (1 | item_number), data = alldata_Pred_RT,
                    REML = TRUE) 
 summary(modelRT5ms)
-
 model.nullRT5ms <- lmer(RT5ms ~ (1 + condition_number | participant) + (1 | item_number), alldata_Pred_RT) 
-
 anova(modelRT5ms,model.nullRT5ms)
 
 #add in group_stATUS and shows neither group is responsible for the effect suggesting similar processing mechanisms for ASC and TD.
@@ -544,6 +539,11 @@ summary(modelTT_ASC)
 
 # Removed outliers it works now!!!!!
 
+# count the ASC TD indices
+count1 <- all_data_join %>% group_by(Group_Status,overall_clinical_range) %>% 
+  summarise(total_count=n(),.groups = 'drop') %>%
+  as.data.frame()
+view(count1)
 
 
 
@@ -603,8 +603,8 @@ summary(GammaRTT)
 #summary(GammaRTT)
 
 #Export a CSV of the new data set...
-write.csv(alldata_Pred_RT,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction\\alldata_Pred_RT.csv", row.names = TRUE)
+#write.csv(alldata_Pred_RT,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction\\alldata_Pred_RT.csv", row.names = TRUE)
 
-write.csv(all_data_join,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction\\all_data_join.csv", row.names = TRUE)
+#write.csv(all_data_join,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Prediction\\all_data_join.csv", row.names = TRUE)
 
 
