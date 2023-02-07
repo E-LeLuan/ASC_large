@@ -368,6 +368,11 @@ descdist(alldata_Pred_RT$RT4ms)
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
+#ANOVA
+#two.way <- aov(RT4ms ~ condition_number * Group_Status + total_t_score + EQ_score, data = all_data_join)
+
+#summary(two.way)
+
 # Seperate analysis based on group
 #Significant
 modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
