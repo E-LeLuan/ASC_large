@@ -273,10 +273,24 @@ all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 # Model including covariates
 model_alldatacov_RT3ms <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT3ms)
-
-
 #NO significant difference in reading the predictive information, this is good as it suggests their are no length, frequency,
 # or other effects of our manipulation.
+
+# Seperate analysis based on group
+# Create subset data lists
+ASC_Group <- filter(all_data_join, Group_Status == "ASC")
+TD_Group <- filter(all_data_join, Group_Status == "TD")
+
+# Seperate analysis based on group
+#Significant
+modelTT_TD <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+summary(modelTT_TD)                   
+
+#Not significant suggesrs TD driving the effect on TT
+modelTT_ASC <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+summary(modelTT_ASC)
+
+
 
 # Let's have a look at region 4 Which is our critical/ Question region
 
@@ -354,6 +368,14 @@ descdist(alldata_Pred_RT$RT4ms)
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
+# Seperate analysis based on group
+#Significant
+modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+summary(modelTT_TD)                   
+
+#Significant
+modelTT_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+summary(modelTT_ASC)
 
 
 # Let's have a look at region 5 Which is our post-critical/ REply region
@@ -432,6 +454,14 @@ qqnorm(residuals(modelRT5ms))
 qqline(residuals(modelRT5ms))
 descdist(alldata_Pred_RT$RT5ms)
 
+# Seperate analysis based on group
+#Significant
+modelTT_TD <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+summary(modelTT_TD)                   
+
+#Significant
+modelTT_ASC <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+summary(modelTT_ASC)
 
 ## Let's have a look at total reading time across all regions
 
