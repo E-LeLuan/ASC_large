@@ -363,23 +363,39 @@ check_model(modelRT4ms)
 qqnorm(residuals(modelRT4ms))
 qqline(residuals(modelRT4ms))
 descdist(alldata_Pred_RT$RT4ms)
+#Descriptives
+all_data_join %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT4ms), sd(RT4ms))
 
 # Model including covariates
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
-#ANOVA
-#two.way <- aov(RT4ms ~ condition_number * Group_Status + total_t_score + EQ_score, data = all_data_join)
+# Model including covariates and the effect of group
+model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT4ms)
 
-#summary(two.way)
+# t.test
+t.test(RT4ms ~ Group_Status, data = all_data_join, var.equal = FALSE)
+
+#ANOVA
+two.way <- aov(RT4ms ~ condition_number * Group_Status + total_t_score + EQ_score, data = all_data_join)
+
+summary(two.way)
+
+#Descriptives
+all_data_join %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT4ms), sd(RT4ms))
 
 # Seperate analysis based on group
 #Significant
-modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score (1 + condition_number | participant) + (1 | item_number), TD_Group) 
 summary(modelTT_TD)                   
 
 #Significant
-modelTT_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+modelTT_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), ASC_Group) 
 summary(modelTT_ASC)
 
 
