@@ -276,19 +276,24 @@ summary(model_alldatacov_RT3ms)
 #NO significant difference in reading the predictive information, this is good as it suggests their are no length, frequency,
 # or other effects of our manipulation.
 
+#covariates including group status 
+model_alldatacov_RT3msGS <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT3msGS)
+
+
 # Seperate analysis based on group
 # Create subset data lists
-ASC_Group <- filter(all_data_join, Group_Status == "ASC")
-TD_Group <- filter(all_data_join, Group_Status == "TD")
+#ASC_Group <- filter(all_data_join, Group_Status == "ASC")
+#TD_Group <- filter(all_data_join, Group_Status == "TD")
 
 # Seperate analysis based on group
 #Significant
-modelTT_TD <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
-summary(modelTT_TD)                   
+#modelTT_TD <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+#summary(modelTT_TD)                   
 
 #Not significant suggesrs TD driving the effect on TT
-modelTT_ASC <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
-summary(modelTT_ASC)
+#modelTT_ASC <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+#summary(modelTT_ASC)
 
 
 
@@ -376,6 +381,11 @@ summary(model_alldatacov_RT4ms)
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
+#Descriptives
+all_data_join %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT4ms), sd(RT4ms))
+
 # t.test
 t.test(RT4ms ~ Group_Status, data = all_data_join, var.equal = FALSE)
 
@@ -384,19 +394,21 @@ two.way <- aov(RT4ms ~ condition_number * Group_Status + total_t_score + EQ_scor
 
 summary(two.way)
 
-#Descriptives
-all_data_join %>% 
-  group_by(condition_number, Group_Status) %>%
-  summarise(mean(RT4ms), sd(RT4ms))
+# Create subset data lists
+ASC_Group <- filter(all_data_join, Group_Status == "ASC")
+TD_Group <- filter(all_data_join, Group_Status == "TD")
+
 
 # Seperate analysis based on group
 #Significant
-modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score (1 + condition_number | participant) + (1 | item_number), TD_Group) 
+modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), TD_Group) 
 summary(modelTT_TD)                   
 
 #Significant
 modelTT_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), ASC_Group) 
 summary(modelTT_ASC)
+
+
 
 
 # Let's have a look at region 5 Which is our post-critical/ REply region
@@ -475,6 +487,15 @@ qqnorm(residuals(modelRT5ms))
 qqline(residuals(modelRT5ms))
 descdist(alldata_Pred_RT$RT5ms)
 
+all_data_join %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT5ms), sd(RT5ms))
+
+# Model including covariates and Group_Status
+model_alldatacov_RT5msGS <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + Group_Status + 
+                                 (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT5msGS)
+
 # Seperate analysis based on group
 #Significant
 modelTT_TD <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
@@ -483,6 +504,14 @@ summary(modelTT_TD)
 #Significant
 modelTT_ASC <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
 summary(modelTT_ASC)
+
+# t.test
+t.test(RT5ms ~ Group_Status, data = all_data_join, var.equal = FALSE)
+
+#ANOVA
+two.way <- aov(RT5ms ~ condition_number * Group_Status + total_t_score + EQ_score, data = all_data_join)
+
+summary(two.way)
 
 ## Let's have a look at total reading time across all regions
 
@@ -529,7 +558,7 @@ all_data_join %>%
 
 #Descriptives
 all_data_join %>% 
-  group_by(condition_number) %>%
+  group_by(condition_number, Group_Status) %>%
   summarise(mean(TT), sd(TT))
 
 
@@ -551,7 +580,7 @@ eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_dat
 #ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 
 eliminated %>% 
-  group_by(condition_number) %>%
+  group_by(condition_number, Group_Status) %>%
   summarise(mean(TT), sd(TT))
 
 modelTT1 <- lmer(TT ~ condition_number + (1 | participant) + (1 + condition_number | item_number), data = eliminated,
@@ -565,8 +594,8 @@ modelTTGS <- lmer(TT ~ condition_number + Group_Status + (1 | participant) + (1 
                   REML = TRUE) 
 summary(modelTTGS)
 
-# Model including covariates
-model_alldatacov_TT <- lmer(TT ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 + condition_number | item_number) , data = eliminated, REML = TRUE)
+# Model including covariates and Group status
+model_alldatacov_TT <- lmer(TT ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 + condition_number | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_TT)
 
 #All the data for this model looks pretty normal.
