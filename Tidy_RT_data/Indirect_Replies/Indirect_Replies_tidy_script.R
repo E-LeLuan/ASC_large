@@ -371,6 +371,11 @@ eliminated %>%
   group_by(condition_number) %>%
   summarise(mean(RT3ms), sd(RT3ms))
 
+#By Group
+eliminated %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT3ms), sd(RT3ms))
+
 modelRT3ms <- lmer(RT3ms ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
                    REML = TRUE) 
 summary(modelRT3ms)
@@ -393,6 +398,10 @@ descdist(alldata_IR_RT$RT3ms)
 # Model including covariates
 model_alldatacov_RT3ms <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT3ms)
+
+#Model including covariates and group status 
+model_alldatacov_RT3msGS <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_RT3msGS)
 
 
 # Let's have a look at region 4 Which is our critical/ Question region
@@ -437,8 +446,6 @@ alldata_IR_RT %>%
   group_by(condition_number) %>%
   summarise(mean(RT4ms), sd(RT4ms))
 
-
-
 # Model assuming normality of residuals maximal structure
 
 #set condition as a factor doesnt make model run
@@ -479,6 +486,12 @@ eliminated %>%
   group_by(condition_number) %>%
   summarise(mean(RT4ms), sd(RT4ms))
 
+#By Group
+eliminated %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT4ms), sd(RT4ms))
+
+
 modelRT4ms <- lmer(RT4ms ~ condition_number + (1 | participant) + (1 | item_number), data = eliminated,
                    REML = TRUE) 
 summary(modelRT4ms)
@@ -504,6 +517,10 @@ descdist(alldata_IR_RT$RT4ms)
 #Lets add ID's
 # Model including covariates
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_RT4ms)
+
+#Model including covariates and Group Status
+model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
 # The difference between negative and positive driving the effect
@@ -571,6 +588,10 @@ ggbetweenstats(eliminated, condition_number, RT5ms, outlier.tagging = TRUE)
 eliminated %>% 
   group_by(condition_number) %>%
   summarise(mean(RT5ms), sd(RT5ms))
+#
+eliminated %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT5ms), sd(RT5ms))
 
 # Model assuming normality of residuals maximal structure
 
@@ -599,6 +620,9 @@ summary(modelRT5msGS)
 model_alldatacov_RT5ms <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT5ms)
 
+# Model including covariates & Group_Status
+model_alldatacov_RT5ms <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_RT5ms)
 
 ## Let's have a look at total reading time across all regions
 
@@ -647,11 +671,13 @@ all_data_join %>%
 all_data_join %>% 
   group_by(condition_number) %>%
   summarise(mean(TT), sd(TT))
-
+#Descriptives
+all_data_join %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(TT), sd(TT))
 
 
 # Model assuming normality of residuals maximal structure
-#SINGULARITY OF FIT ISSUE HERE
 modelTT <- lmer(TT ~ condition_number + (1 | participant) + (1 | item_number), data = all_data_join,
                 REML = TRUE) 
 summary(modelTT)
@@ -694,7 +720,9 @@ descdist(alldata_IR_RT$TT)
 model_alldatacov_TT <- lmer(TT ~ condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_TT)
 
-
+# Model including covariates & Group Status
+model_alldatacov_TTGS <- lmer(TT ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_TTGS)
 
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
 #With Gamma we can include more random effects including maximal structure with random slopes for particiapnt and item 
