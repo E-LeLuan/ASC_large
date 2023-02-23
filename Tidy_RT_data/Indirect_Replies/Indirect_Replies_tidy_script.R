@@ -231,7 +231,7 @@ alldata_IR_RT %>%
 #  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
 #  guides(scale = none)
 
-Violin plots by group_status
+#Violin plots by group_status
 alldata_IR_RT %>% 
   ggplot(aes(x = condition_number, y = RT2ms, colour = Group_Status)) + ggtitle("Reaction Time Region 2") +
   labs(y = "Reading time in seconds", x = "Indirect_Replies") +
