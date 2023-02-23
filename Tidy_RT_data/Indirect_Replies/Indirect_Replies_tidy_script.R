@@ -201,14 +201,17 @@ alldata_IR_RT <- alldata_IR_RT%>%
 
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
 
-# Let's have a look at region 2 Which is a nothing region
+# Let's have a look at region 2 Which is our sentiment manipulation
 # Postitive, negative, neutral
 
 #view(alldata_IR_RT)
+alldata_IR_RT %>% 
+  group_by(condition_number) %>%
+  summarise(mean(RT2ms), sd(RT2ms))
 
-#alldata_IR_RT %>% 
-#  group_by(condition_number) %>%
-#  summarise(mean(RT2ms), sd(RT2ms))
+alldata_IR_RT %>% 
+  group_by(condition_number, Group_Status) %>%
+  summarise(mean(RT2ms), sd(RT2ms))
 
 #Violin plots
 #alldata_IR_RT %>% 
@@ -228,14 +231,14 @@ alldata_IR_RT <- alldata_IR_RT%>%
 #  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
 #  guides(scale = none)
 
-#Violin plots by group_status
-#alldata_IR_RT %>% 
-#  ggplot(aes(x = condition_number, y = RT2ms, colour = Group_Status)) + ggtitle("Reaction Time Region 2") +
-#  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
-#  geom_violin() +
-#  geom_jitter(alpha = .2, width = .1) +
-#  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
-#  guides(scale = FALSE)
+Violin plots by group_status
+alldata_IR_RT %>% 
+  ggplot(aes(x = condition_number, y = RT2ms, colour = Group_Status)) + ggtitle("Reaction Time Region 2") +
+  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
+  geom_violin() +
+  geom_jitter(alpha = .2, width = .1) +
+  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
+  guides(scale = FALSE)
 
 #Boxplt
 #alldata_IR_RT %>% 
@@ -246,28 +249,15 @@ alldata_IR_RT <- alldata_IR_RT%>%
 #  stat_summary(fun.data = "mean_cl_boot", colour = "black") +
 #  guides(scale = FALSE)
 
-#Have a lookat outliers as that standard deviation is crazy out!
-#ggbetweenstats(alldata_IR_RT, condition_number, RT2ms, outlier.tagging = TRUE)
-#Q <- quantile(alldata_IR_RT$RT2ms, probs=c(.25, .75), na.rm = FALSE)
-#view(Q)
-#iqr <- IQR(alldata_IR_RT$RT2ms)
-#up <-  Q[2]+2.0*iqr # Upper Range  
-#low<- Q[1]-2.0*iqr # Lo
-#eliminated<- subset(alldata_IR_RT, alldata_IR_RT$RT2ms > (Q[1] - 2.0*iqr) & alldata_IR_RT$RT2ms < (Q[2]+2.0*iqr))
-#ggbetweenstats(eliminated, condition_number, RT2ms, outlier.tagging = TRUE) 
+#Model R2
+model_alldata_RT2ms <- lmer(RT2ms ~  condition_number + (1 | participant) +  (1 | item_number) , data = alldata_IR_RT, REML = TRUE)
+summary(model_alldata_RT2ms)
+modelnullRT2ms <- lmer(RT2ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
+anova(model_alldata_RT2ms,modelnullRT2ms)
 
-#eliminated %>% 
-#  group_by(condition_number) %>%
-#  summarise(mean(RT2ms), sd(RT2ms))
-# Model assuming normality of residuals maximal structure
-#Maximal model with no singularity of fit error drops participant and item random effects
-#modelRT2ms <- lmer(RT2ms ~ condition_number + (1 | participant) + (1 | item_number), data = alldata_IR_RT,
-#                   REML = TRUE) 
-#summary(modelRT2ms)
-
-#model.nullRT2ms <- lmer(RT3ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
-
-#anova(modelRT2ms,model.nullRT2ms)
+#Model R2 including covariates and GS
+model_alldata_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldata_RT2ms)
 
 
 #All the data for this model looks pretty normal.
