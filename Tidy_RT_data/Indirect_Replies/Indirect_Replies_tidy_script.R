@@ -255,10 +255,6 @@ summary(model_alldata_RT2ms)
 modelnullRT2ms <- lmer(RT2ms ~ (1 | participant) + (1 | item_number), alldata_IR_RT) 
 anova(model_alldata_RT2ms,modelnullRT2ms)
 
-#Model R2 including covariates and GS
-model_alldata_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
-summary(model_alldata_RT2ms)
-
 
 #All the data for this model looks pretty normal.
 #check_model(modelRT2ms)
@@ -281,9 +277,18 @@ all_data_join$total_t_score <- scale(all_data_join$total_t_score)
 all_data_join$total_RAW_score <- scale(all_data_join$total_RAW_score)
 all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 
-# Model including covariates
-#model_alldatacov_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
-#summary(model_alldatacov_RT2ms)
+# Model including covariates 
+model_alldatacov_RT2ms <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldatacov_RT2ms)
+
+#Model R2 including covariates and GS
+model_alldata_RT2msGS <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldata_RT2msGS)
+
+SER2 = emmeans(model_alldata_RT2msGS, specs = 'condition_number')
+summary(SER2)
+SER2 = emmeans(model_alldata_RT2msGS, specs = 'condition_number', 'Group_Status')
+summary(SER2)
 
 # Let's have a look at region 3 Which is our Indirect_Replies region
 
@@ -393,6 +398,10 @@ summary(model_alldatacov_RT3ms)
 model_alldatacov_RT3msGS <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT3msGS)
 
+  SER3 = emmeans(model_alldatacov_RT3msGS, specs = 'condition_number')
+  summary(SER3)
+  SER3 = emmeans(model_alldatacov_RT3msGS, specs = 'condition_number', 'Group_Status')
+  summary(SER3)
 
 # Let's have a look at region 4 Which is our critical/ Question region
 #Violin plots
@@ -513,6 +522,11 @@ summary(model_alldatacov_RT4ms)
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
+SER4 = emmeans(model_alldatacov_RT4ms, specs = 'condition_number')
+summary(SER4)
+SER4 = emmeans(model_alldatacov_RT4ms, specs = 'condition_number', 'Group_Status')
+summary(SER4)
+
 # The difference between negative and positive driving the effect
 #positive <- c(rnorm(120, mean = 1601, sd = 658))
 #negative <- c(rnorm(120, mean = 1513, sd = 637))
@@ -614,6 +628,11 @@ summary(model_alldatacov_RT5ms)
 model_alldatacov_RT5ms <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_RT5ms)
 
+SER5 = emmeans(model_alldatacov_RT5ms, specs = 'condition_number')
+summary(SER5)
+SER5 = emmeans(model_alldatacov_RT5ms, specs = 'condition_number', 'Group_Status')
+summary(SER5)
+
 ## Let's have a look at total reading time across all regions
 
 all_data_join <- all_data_join %>% group_by(participant) %>%
@@ -703,7 +722,7 @@ anova(model.nullTT, modelTT)
 check_model(modelTT)
 qqnorm(residuals(modelTT))
 qqline(residuals(modelTT))
-descdist(alldata_IR_RT$TT)
+descdist(all_data_join$TT)
 
 #Lets add ID's
 # Model including covariates
@@ -713,6 +732,11 @@ summary(model_alldatacov_TT)
 # Model including covariates & Group Status
 model_alldatacov_TTGS <- lmer(TT ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_TTGS)
+
+SERTT = emmeans(model_alldatacov_TTGS, specs = 'condition_number')
+summary(SERTT)
+SERTT = emmeans(model_alldatacov_TTGS, specs = 'condition_number', 'Group_Status')
+summary(SERTT)
 
 ################Lognormal analysis as Weibull is closest to lognormal and gamma#############################
 #With Gamma we can include more random effects including maximal structure with random slopes for particiapnt and item 
