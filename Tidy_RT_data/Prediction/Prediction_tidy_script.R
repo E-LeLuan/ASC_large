@@ -280,6 +280,11 @@ summary(model_alldatacov_RT3ms)
 model_alldatacov_RT3msGS <- lmer(RT3ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT3msGS)
 
+SER3 = emmeans(model_alldatacov_RT3msGS, specs = 'condition_number', pbkrtest.limit = 3840)
+summary(SER3)
+SER3 = emmeans(model_alldatacov_RT3msGS, specs = 'condition_number', 'Group_Status', pbkrtest.limit = 3840)
+summary(SER3)
+
 
 # Seperate analysis based on group
 # Create subset data lists
@@ -381,6 +386,11 @@ summary(model_alldatacov_RT4ms)
 model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + Group_Status + (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT4ms)
 
+SER4 = emmeans(model_alldatacov_RT4ms, specs = 'condition_number', pbkrtest.limit = 3840)
+summary(SER4)
+SER4 = emmeans(model_alldatacov_RT4ms, specs = 'condition_number', 'Group_Status', pbkrtest.limit = 3840)
+summary(SER4)
+
 #Descriptives
 all_data_join %>% 
   group_by(condition_number, Group_Status) %>%
@@ -401,17 +411,17 @@ TD_Group <- filter(all_data_join, Group_Status == "TD")
 
 # Seperate analysis based on group
 #Significant
-modelTT_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), TD_Group) 
-summary(modelTT_TD)                   
+modelr4_TD <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), TD_Group) 
+summary(modelr4_TD)                   
 
 #Significant
-modelTT_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), ASC_Group) 
-summary(modelTT_ASC)
+modelr4_ASC <- lmer(RT4ms ~ condition_number + total_t_score + EQ_score + (1 + condition_number | participant) + (1 | item_number), ASC_Group) 
+summary(modelr4_ASC)
 
 
 
 
-# Let's have a look at region 5 Which is our post-critical/ REply region
+# Let's have a look at region 5 Which is our post-critical/ Reply region
 
 #Violin plots
 alldata_Pred_RT %>% 
@@ -496,14 +506,19 @@ model_alldatacov_RT5msGS <- lmer(RT5ms ~ condition_number + total_t_score + EQ_s
                                  (1 + condition_number | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_alldatacov_RT5msGS)
 
+SER5 = emmeans(model_alldatacov_RT5msGS, specs = 'condition_number', pbkrtest.limit = 3840)
+summary(SER5)
+SER5 = emmeans(model_alldatacov_RT5msGS, specs = 'condition_number', 'Group_Status', pbkrtest.limit = 3840)
+summary(SER5)
+
 # Seperate analysis based on group
 #Significant
-modelTT_TD <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
-summary(modelTT_TD)                   
+modelr5_TD <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), TD_Group) 
+summary(modelr5_TD)                   
 
 #Significant
-modelTT_ASC <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
-summary(modelTT_ASC)
+modelr5_ASC <- lmer(RT5ms ~ condition_number + total_t_score + EQ_score + (1 | participant) + (1 | item_number), ASC_Group) 
+summary(modelr5_ASC)
 
 # t.test
 t.test(RT5ms ~ Group_Status, data = all_data_join, var.equal = FALSE)
@@ -597,6 +612,11 @@ summary(modelTTGS)
 # Model including covariates and Group status
 model_alldatacov_TT <- lmer(TT ~ condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 + condition_number | item_number) , data = eliminated, REML = TRUE)
 summary(model_alldatacov_TT)
+
+SETT = emmeans(model_alldatacov_TT, specs = 'condition_number', pbkrtest.limit = 3840)
+summary(SETT)
+SETT = emmeans(model_alldatacov_TT, specs = 'condition_number', 'Group_Status', pbkrtest.limit = 3840)
+summary(SETT)
 
 #All the data for this model looks pretty normal.
 check_model(modelTT1)
