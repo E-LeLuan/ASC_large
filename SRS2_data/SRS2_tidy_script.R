@@ -612,10 +612,10 @@ alldata <- alldata %>%
                                          DSM5_t_score >= 76 & DSM5_t_score <= 90 ~ 'Severe'))
 
 
- view(alldata)                                
+view(alldata)                                
 
 #Export a CSV of the new data set...
-write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldataSRS2.csv", row.names = TRUE)
+#write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldataSRS2.csv", row.names = TRUE)
 
 # All data extracted and new CSV created called all data created. WHOOP WHOOP!!!!!!!!!
 
@@ -627,34 +627,41 @@ write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldataSR
 #WHY ARE YOU NOT WORKING because dbl not num. import the exxported dataset and change dbl to num
 
 # change total_t_score to numeric from dbl
-alldata <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data/alldata.csv", 
-                    col_types = cols(treatment_t_score = col_number()))
+#alldata <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data/alldata.csv", 
+#                    col_types = cols(treatment_t_score = col_number()))
 
-alldata %>% 
+
+alldataSRS2 <- read_csv("SRS2_data/alldata.csv")
+
+
+#get rid of excess info.
+alldataSRS2 <- alldataSRS2 %>%
+  distinct(participant, .keep_all = TRUE)
+
+view(alldataSRS2)
+
+library(ggpubr)
+
+#EQ
+compare_means(total_t_score ~ Group_Status, data = alldataSRS2, method = "t.test")
+
+#stat_compare_means(mapping = NULL, comparisons = "Group_Status" hide.ns = FALSE,
+#                   label = p.signif,  label.x = NULL, label.y = NULL,  ...)
+
+p <- ggboxplot(alldataSRS2, x = "Group_Status", y = "total_t_score",
+               color = "Group_Status", palette = "jco",
+               add = "jitter")
+#  Add p-value
+p + stat_compare_means(method = "t.test")
+# Change method
+p + stat_compare_means(method = "t.test")
+
+t.test(total_t_score ~ Group_Status, data = alldataSRS2)
+alldataSRS2 %>% 
   group_by(Group_Status) %>%
-  summarise(mean(total_t_score), sd(total_t_score))
-##OUTPUT##
-# A tibble: 2 × 3
-#Group_Status `mean(total_t_score)` `sd(total_t_score)`
-#<chr>                        <dbl>               <dbl>
-#  1 ASC                      77.9                8.59
-#2 TD                         52.6                9.32
+  summarize(meanASC = mean(total_t_score),
+            sdASC = sd(total_t_score))
 
-#Average ASC in the moderate autistic traits category, average TD in the within normal limits category
+write.csv(alldataSRS2,"\\alldataSRS2distinct.csv", row.names = TRUE)
 
-#Much lower empathy scores for the ASC group compared to the TD group Let's have a look at this with a t test
-ASC_SRS2_mean <- rnorm(60, mean = 77.9, sd = 8.59)
-TD_SRS2_mean <- rnorm(59, mean = 52.6, sd = 9.32)
-t.test(ASC_SRS2_mean, TD_SRS2_mean, var.equal = TRUE) 
-##OUTPUT##
 
-#Two Sample t-test
-
-#data:  ASC_SRS2_mean and TD_SRS2_mean
-#t = 14.687, df = 117, p-value < 2.2e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  21.96013 28.80553
-#sample estimates:
-#  mean of x mean of y 
-#78.55883  53.17600 

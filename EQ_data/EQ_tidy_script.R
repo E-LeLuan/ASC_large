@@ -204,23 +204,44 @@ alldata_EQ %>%
 #<chr>                   <dbl>          <dbl>
 #1 ASC                      23.7           10.4
 #2 TD                       46.2           13.4
+#Add in group status
+Reduced_IDs_IR <- alldata_EQ%>%
+  mutate(Group_Status = participant <= 30)
+
+# Rename TRUE FALSE to more meaningful labels.
+Reduced_IDs_IR$Group_Status[Reduced_IDs_IR$Group_Status == 'TRUE'] <- "ASC"
+Reduced_IDs_IR$Group_Status[Reduced_IDs_IR$Group_Status == 'FALSE'] <- "TD"
+view(Reduced_IDs_IR)
 
 
-#Much lower empathy scores for the ASC group compared to the TD group Let's have a look at this with a t test
-ASC_EQ_mean <- rnorm(60, mean = 23.7, sd = 10.4)
-TD_EQ_mean <- rnorm(60, mean = 46.2, sd = 13.4)
-t.test(ASC_EQ_mean, TD_EQ_mean, var.equal = TRUE)
+Reduced_IDs_IR <- Reduced_IDs_IR %>%
+  distinct(participant, .keep_all = TRUE)
 
-#Two Sample t-test
+view(Reduced_IDs_IR)
 
-#data:  ASC_EQ_mean and TD_EQ_mean
-#t = -9.3236, df = 118, p-value = 7.998e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -27.56016 -17.90386
-#sample estimates:
-#  mean of x mean of y 
-#   24.92264  47.65465 
+
+
+library(ggpubr)
+
+#EQ
+compare_means(EQ_score ~ Group_Status, data = Reduced_IDs_IR, method = "t.test")
+
+#stat_compare_means(mapping = NULL, comparisons = "Group_Status" hide.ns = FALSE,
+#                   label = p.signif,  label.x = NULL, label.y = NULL,  ...)
+
+p <- ggboxplot(Reduced_IDs_IR, x = "Group_Status", y = "EQ_score",
+               color = "Group_Status", palette = "jco",
+               add = "jitter")
+#  Add p-value
+p + stat_compare_means(method = "t.test")
+# Change method
+p + stat_compare_means(method = "t.test")
+
+t.test(EQ_score ~ Group_Status, data = Reduced_IDs_IR)
+Reduced_IDs_IR %>% 
+  group_by(Group_Status) %>%
+  summarize(meanASC = mean(EQ_score),
+            sdASC = sd(EQ_score))
 
 #Export a CSV of the new data set...
-write.csv(alldata_EQ,"//nask.man.ac.uk/home$/Desktop/ASC_large/EQ_data\\alldata_EQ.csv", row.names = TRUE)
+write.csv(Reduced_IDs_IR,"//Desktop/ASC_large/EQ_data\\alldataEQ.csv", row.names = TRUE)

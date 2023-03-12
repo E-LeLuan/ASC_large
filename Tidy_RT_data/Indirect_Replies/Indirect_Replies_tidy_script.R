@@ -478,7 +478,10 @@ iqr <- IQR(all_data_join$RT4ms)
 up <-  Q[2]+2.0*iqr # Upper Range  
 low<- Q[1]-2.0*iqr # Lo
 eliminated<- subset(all_data_join, all_data_join$RT4ms > (Q[1] - 2.0*iqr) & all_data_join$RT4ms < (Q[2]+2.0*iqr))
+
 ggbetweenstats(eliminated, condition_number, RT4ms, outlier.tagging = TRUE) 
+
+
 
 #much better SD's
 eliminated %>% 
@@ -808,3 +811,112 @@ summary(GammaTT)
 #Export a CSV of the new data set...
 #write.csv(alldata_IR_RT,"//nask.man.ac.uk/home$/Desktop/ASC_large/Tidy_RT_data/Indirect_Replies\\alldata_IR_RT.csv", row.names = TRUE)
 
+
+# Let's try some more analysis
+
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+
+#R2
+#Model R2 including covariates and GS
+model_alldata_RT2msGS <- lmer(RT2ms ~  condition_number + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+summary(model_alldata_RT2msGS)
+
+
+all_data_join %>%
+  group_by(condition_number, Group_Status) %>%
+  get_summary_stats(RT2ms, type = "mean_sd")
+
+stat.test <- all_data_join %>%
+  group_by(condition_number) %>%
+  t_test(RT2ms ~ Group_Status, p.adjust.method = "bonferroni")
+stat.test
+
+# Create the plot
+myplot <- ggboxplot(
+  all_data_join, x = "Group_Status", y = "RT2ms",
+  fill = "Group_Status", palette = "npg", legend = "none",
+  ggtheme = theme_pubr(border = TRUE)
+) +
+  facet_wrap(~condition_number)
+# Add statistical test p-values
+stat.test <- stat.test %>% add_xy_position(x = "Group_Status")
+myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
+
+#R2 Pairwise comparisons
+##Difference between conditions by group
+compare_means(RT2ms ~ condition_number, data = all_data_join, 
+              group.by = "Group_Status", method = "t.test")
+# Box plot facetted by "Group_Status"
+p <- ggboxplot(all_data_join, x = "condition_number", y = "RT2ms",
+               color = "Group_Status", palette = "jco",
+               add = "jitter")
+p + stat_compare_means(aes(group = Group_Status))
+p + stat_compare_means(aes(group = Group_Status), label = "p.sig")
+
+
+#Difference between conditions by group
+compare_means(RT2ms ~ Group_Status, data = all_data_join, 
+              group.by = "condition_number", method = "t.test")
+# Box plot facetted by "Group_Status"
+p <- ggboxplot(all_data_join, x = "Group_Status", y = "RT2ms",
+               color = "condition_number", palette = "jco",
+               add = "jitter")
+p + stat_compare_means(aes(group = condition_number))
+p + stat_compare_means(aes(group = condition_number), label = "p.signif")
+
+compare_means(RT2ms ~ Group_Status, data = all_data_join, 
+              group.by = "condition_number", paired = TRUE)
+p <- ggpaired(all_data_join, x = "Group_Status", y = "RT2ms",
+              color = "Group_Status", palette = "jco",
+              line.color = "gray", line.size = 0.4,
+              facet.by = "condition_number", short.panel.labs = FALSE)
+# Use only p.format as label. Remove method name.
+p + stat_compare_means(label = "p.signif")
+#p + labs(x = "Group Status")
+#p + labs(y = "Reading Time in ms.")
+
+#R4
+#Model including covariates and Group Status
+model_alldatacov_RT4ms <- lmer(RT4ms ~ condition_number + + total_t_score + EQ_score + Group_Status + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+summary(model_alldatacov_RT4ms)
+
+#THIS IS ALL RIGHT
+##Difference between conditions by group
+compare_means(RT4ms ~ condition_number, data = eliminated, 
+              group.by = "Group_Status", method = "t.test")
+
+# Box plot facetted by "Group_Status"
+p <- ggboxplot(all_data_join, x = "condition_number", y = "RT4ms",
+               color = "Group_Status", palette = "jco",
+               add = "jitter")
+p + stat_compare_means(aes(group = Group_Status))
+p + stat_compare_means(aes(group = Group_Status), label = "p.signif")
+
+#THIS IS CONFUSING 
+#Difference between conditions by group
+compare_means(RT4ms ~ Group_Status, data = eliminated, 
+              group.by = "condition_number")
+# Box plot facetted by "Group_Status"
+p <- ggboxplot(eliminated, x = "Group_Status", y = "RT4ms",
+               color = "condition_number", palette = "jco",
+               add = "jitter")
+p + stat_compare_means(aes(group = condition_number))
+p + stat_compare_means(aes(group = condition_number), label = "p.signif")
+
+compare_means(RT4ms ~ Group_Status, data = eliminated, 
+              group.by = "condition_number", paired = TRUE)
+p <- ggpaired(eliminated, x = "Group_Status", y = "RT4ms",
+              color = "Group_Status", palette = "jco",
+              line.color = "gray", line.size = 0.4,
+              facet.by = "condition_number", short.panel.labs = FALSE)
+# Use only p.format as label. Remove method name.
+p + stat_compare_means(label = "p.signif")
+#p + labs(x = "Group Status")
+#p + labs(y = "Reading Time in ms.")
+all_data_join %>%
+  group_by(condition_number, Group_Status) %>%
+  get_summary_stats(RT4ms, type = "mean_sd")
+
+#THIS ANALYSIS IS ALL SORTS OF CONFUSING!!!!!
