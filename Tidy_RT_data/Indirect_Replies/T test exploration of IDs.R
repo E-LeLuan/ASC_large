@@ -31,6 +31,7 @@ p + stat_compare_means(method = "t.test")
 p + labs(title = "Overall score on EQ", x = "Group", y = "EQ")
 
 t.test(EQ_score ~ Group_Status, data = Reduced_ID)
+wilcox.test((EQ_score ~ Group_Status, data = Reduced_ID))
 
 #EQ
 Reduced_ID %>% 
