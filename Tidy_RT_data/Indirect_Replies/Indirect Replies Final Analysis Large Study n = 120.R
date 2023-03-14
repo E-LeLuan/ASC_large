@@ -73,11 +73,52 @@ summary(SER42)
 #Violin plots by group_status
 eliminated %>% 
   ggplot(aes(x = condition_number, y = RT4ms, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
-  labs(y = "Reading time in seconds", x = "Indirect_Replies") +
+  labs(y = "Reading time in milliseconds", x = "Indirect Replies Sentiment") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
   stat_summary(fun.data = "mean_cl_boot", colour = "black") +
   guides(scale = FALSE)
+# Boxplot just Reading information
+myplot3 <- ggboxplot(
+  eliminated, x = "condition_number", y = "RT4ms",
+  fill = "condition_number", palette = "jco", legend = "none",
+  ggtheme = theme_pubr(border = TRUE)) + 
+  labs(title = "Critical Reply Region", y = "Reading time in Milliseconds", x = "Indirect Reply Sentiment")
+myplot3
+#Raincloud plot
+library(ggdist)
+library(ggthemes)
+eliminated %>% 
+  ggplot(aes(x = condition_number, y = RT4ms, colour = Group_Status)) + ggtitle("Critical Reply Region") +
+  #add violins from ggdist package
+  stat_halfeye(adjust = .5, width = .5, .width = 0, justification = -.3, point_colour = NA) + 
+  geom_boxplot(width = 0.35, outlier.color = "NA", justification = -0.35) +
+  scale_fill_fivethirtyeight() + 
+  labs(y = "Reading time in seconds", x = "Indirect Replies Sentiment") + 
+  coord_flip()
+# Create the plot between conditions vs. groups
+#myplot <- ggboxplot(
+#  eliminated, x = "Group_Status", y = "RT4ms",
+#  fill = "Group_Status", palette = "jco", legend = "none",
+#  ggtheme = theme_pubr(border = TRUE)
+#) +
+#  facet_wrap(~condition_number)
+#myplot
+# Create the plot between groups vs. conditions
+#myplot2 <- ggboxplot(
+#  eliminated, x = "condition_number", y = "RT4ms",
+#  fill = "condition_number", palette = "jco", legend = "none",
+#  ggtheme = theme_pubr(border = TRUE)
+#) +
+#  facet_wrap(~Group_Status)
+#myplot2
+# Create RT only plot as no effect of group status on processing
+#p <- ggboxplot(eliminated, x = "condition_number", y = "RT4ms",
+#               color = "condition_number", palette = "jco",
+#               add = "jitter")
+#p + labs(title = "Critical Reply Region", y= "Reading Time in Milliseconds",
+#         x = "Indirect Reply Sentiment")
+#p
 
 
 #Region 5-> Post-Critical Wrap-Up ROI
