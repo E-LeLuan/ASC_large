@@ -91,7 +91,7 @@ low<- Q[1]-2.0*iqr # Lo
 eliminated<- subset(all_data_join, all_data_join$RT5ms > (Q[1] - 2.0*iqr) & all_data_join$RT5ms < (Q[2]+2.0*iqr))
 ggbetweenstats(eliminated, condition_number, RT5ms, outlier.tagging = TRUE) 
 # Model including group status interaction and IDs with ouliers removed as crazy fixations 181,155
-model_int5 <- lmer(RT5ms ~  condition_number * Group_Status + Total_reading_cluster + SRS_total_score_t + EQ + Total_RAN + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+model_int5 <- lmer(RT5ms ~  condition_number * Group_Status + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_int5)
 #Summary Stats using emmeans
 SE5 = emmeans(model_int5, specs = 'condition_number')
@@ -111,16 +111,16 @@ eliminated %>%
 all_data_join <- all_data_join %>% group_by(participant) %>%
   mutate(TT = (RT1ms + RT2ms + RT3ms + RT4ms + RT5ms + RT6ms))
 #Remove outliers
-ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
-Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
+#ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
+#Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-iqr <- IQR(all_data_join$TT)
-up <-  Q[2]+2.0*iqr # Upper Range  
-low<- Q[1]-2.0*iqr # Lo
-eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
-ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
+#iqr <- IQR(all_data_join$TT)
+#up <-  Q[2]+2.0*iqr # Upper Range  
+#low<- Q[1]-2.0*iqr # Lo
+#eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
+#ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 # Model including group status interaction and IDs with ouliers removed as crazy fixations 1,299,978
-model_intTT <- lmer(TT ~ condition_number * Group_Status + Total_reading_cluster + SRS_total_score_t + EQ + Total_RAN + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
+model_intTT <- lmer(TT ~ condition_number * Group_Status + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_intTT)
 #Summary Stats using emmeans
 SETT = emmeans(model_intTT, specs = 'condition_number')
@@ -128,7 +128,7 @@ summary(SETT)
 SETT = emmeans(model_intTT, specs = 'condition_number', 'Group_Status')
 summary(SETT)
 #Violin plots by group_status
-eliminated %>% 
+all_data_join %>% 
   ggplot(aes(x = condition_number, y = TT, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
   labs(y = "Reading time in seconds", x = "Indirect_Replies") +
   geom_violin() +
