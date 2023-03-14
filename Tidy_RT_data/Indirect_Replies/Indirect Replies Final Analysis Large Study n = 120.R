@@ -5,6 +5,8 @@ library(lme4)
 library(lmerTest)
 library(ggpubr)
 library(ggstatsplot)
+library(ggdist)
+library(ggthemes)
 
 alldata_IR_RT <- read_csv("Tidy_RT_data/Indirect_Replies/alldata_IR_RT.csv", 
                           col_types = cols(RT1 = col_number(), 
@@ -86,15 +88,13 @@ myplot3 <- ggboxplot(
   labs(title = "Critical Reply Region", y = "Reading time in Milliseconds", x = "Indirect Reply Sentiment")
 myplot3
 #Raincloud plot
-library(ggdist)
-library(ggthemes)
 eliminated %>% 
   ggplot(aes(x = condition_number, y = RT4ms, colour = Group_Status)) + ggtitle("Critical Reply Region") +
   #add violins from ggdist package
   stat_halfeye(adjust = .5, width = .5, .width = 0, justification = -.3, point_colour = NA) + 
   geom_boxplot(width = 0.35, outlier.color = "NA", justification = -0.35) +
   scale_fill_fivethirtyeight() + 
-  labs(y = "Reading time in seconds", x = "Indirect Replies Sentiment") + 
+  labs(y = "Reading time in Milliseconds", x = "Indirect Replies Sentiment") + 
   coord_flip()
 # Create the plot between conditions vs. groups
 #myplot <- ggboxplot(
