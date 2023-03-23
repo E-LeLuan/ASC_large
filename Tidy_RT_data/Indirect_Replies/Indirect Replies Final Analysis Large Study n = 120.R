@@ -7,6 +7,8 @@ library(ggpubr)
 library(ggstatsplot)
 library(ggdist)
 library(ggthemes)
+library(emmeans)
+
 
 alldata_IR_RT <- read_csv("Tidy_RT_data/Indirect_Replies/alldata_IR_RT.csv", 
                           col_types = cols(RT1 = col_number(), 
@@ -27,7 +29,7 @@ Reduced_IDs_IR <- read_csv("Tidy_RT_data/Indirect_Replies/Reduced_IDs_IR.csv",
 
 #Combined ID's with Reaction Time Data
 all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs_IR, by = "participant")
-View(all_data_join)
+#View(all_data_join)
 # Scale the ID measures...
 all_data_join$total_t_score <- scale(all_data_join$total_t_score)
 all_data_join$EQ_score <- scale(all_data_join$EQ_score)
@@ -39,7 +41,6 @@ all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 model_int2 <- lmer(RT2ms ~ condition_number*Group_Status + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
 summary(model_int2)
 # Summary Stats using emmeans package
-library(emmeans)
 SER21 = emmeans(model_int2, specs = 'condition_number')
 summary(SER21)
 SER22 = emmeans(model_int2, specs = 'condition_number', 'Group_Status')
@@ -152,16 +153,16 @@ eliminated %>%
 all_data_join <- all_data_join %>% group_by(participant) %>%
   mutate(TT = (RT1ms + RT2ms + RT3ms + RT4ms + RT5ms + RT6ms))
 #Remove outliers
-#ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
-#Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
+ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
+Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
-#iqr <- IQR(all_data_join$TT)
-#up <-  Q[2]+2.0*iqr # Upper Range  
-#low<- Q[1]-2.0*iqr # Lo
-#eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
-#ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
+iqr <- IQR(all_data_join$TT)
+up <-  Q[2]+2.0*iqr # Upper Range  
+low<- Q[1]-2.0*iqr # Lo
+eliminated<- subset(all_data_join, all_data_join$TT > (Q[1] - 2.0*iqr) & all_data_join$TT < (Q[2]+2.0*iqr))
+ggbetweenstats(eliminated, condition_number, TT, outlier.tagging = TRUE) 
 # Model including group status interaction and IDs with ouliers removed as crazy fixations 1,299,978
-model_intTT <- lmer(TT ~ condition_number * Group_Status + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = all_data_join, REML = TRUE)
+model_intTT <- lmer(TT ~ condition_number * Group_Status + total_t_score + EQ_score + (1 | participant) +  (1 | item_number) , data = eliminated, REML = TRUE)
 summary(model_intTT)
 #Summary Stats using emmeans
 SETT = emmeans(model_intTT, specs = 'condition_number')
