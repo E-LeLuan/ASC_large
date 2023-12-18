@@ -22,18 +22,24 @@ alldata_IR_RT <- read_csv("Tidy_RT_data/Indirect_Replies/alldata_IR_RT.csv",
 #View(alldata_IR_RT)
 
 #Add Individual Difference Measures
-Reduced_IDs_IR <- read_csv("Tidy_RT_data/Indirect_Replies/Reduced_IDs_IR.csv", 
+Reduced_IDs <- read_csv("Tidy_RT_data/Reduced_IDs.csv", 
                            col_types = cols(total_RAW_score = col_number(), 
                                             total_t_score = col_number(), EQ_score = col_number()))
-#View(Reduced_IDs_IR)
+#View(Reduced_IDs)
 
 #Combined ID's with Reaction Time Data
-all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs_IR, by = "participant")
-#View(all_data_join)
+all_data_join <- inner_join(alldata_IR_RT, Reduced_IDs, by = "participant")
+View(all_data_join)
 # Scale the ID measures...
 all_data_join$total_t_score <- scale(all_data_join$total_t_score)
 all_data_join$EQ_score <- scale(all_data_join$EQ_score)
 
+#Relabel group status and remove double labels
+
+all_data_join = select(all_data_join, -Group_Status.x)
+all_data_join <- rename(all_data_join, Group_Status = Group_Status.y)
+
+#view(all_data_join)
 #Lets have a look at the models we have reported (note: Tidy_IR_sript.R in Indirect_Replies folder has more exploration of the data)
 
 #Region 2-> Sentiment Manipulation ROI
@@ -75,8 +81,8 @@ SER42 = emmeans(model_int4, specs = 'condition_number', 'Group_Status')
 summary(SER42)
 #Violin plots by group_status
 eliminated %>% 
-  ggplot(aes(x = condition_number, y = RT4ms, colour = Group_Status)) + ggtitle("Reaction Time Region 4") +
-  labs(y = "Reading time in milliseconds", x = "Indirect Replies Sentiment") +
+  ggplot(aes(x = condition_number, y = RT4ms, colour = Group_Status)) + ggtitle("Critical Reply Region") +
+  labs(y = "Reading time in milliseconds", x = "Indirect Reply Sentiment") +
   geom_violin() +
   geom_jitter(alpha = .2, width = .1) +
   stat_summary(fun.data = "mean_cl_boot", colour = "black") +
@@ -86,7 +92,7 @@ myplot3 <- ggboxplot(
   eliminated, x = "condition_number", y = "RT4ms",
   fill = "condition_number", palette = "jco", legend = "none",
   ggtheme = theme_pubr(border = TRUE)) + 
-  labs(title = "Critical Reply Region", y = "Reading time in Milliseconds", x = "Indirect Reply Sentiment")
+  labs(title = "Critical Reply Region", y = "Reading time in milliseconds", x = "Indirect Reply Sentiment")
 myplot3
 #Raincloud plot
 eliminated %>% 
@@ -95,7 +101,7 @@ eliminated %>%
   stat_halfeye(adjust = .5, width = .5, .width = 0, justification = -.3, point_colour = NA) + 
   geom_boxplot(width = 0.35, outlier.color = "NA", justification = -0.35) +
   scale_fill_fivethirtyeight() + 
-  labs(y = "Reading time in Milliseconds", x = "Indirect Replies Sentiment") + 
+  labs(y = "Reading time in milliseconds", x = "Indirect Reply Sentiment") + 
   coord_flip()
 # Create the plot between conditions vs. groups
 #myplot <- ggboxplot(

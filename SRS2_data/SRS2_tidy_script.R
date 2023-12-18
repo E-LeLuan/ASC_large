@@ -167,7 +167,7 @@ alldata <- alldata%>%
 
 # Rename TRUE FALSE to more meaningful labels.
 alldata$Group_Status[alldata$Group_Status == 'TRUE'] <- "ASC"
-alldata$Group_Status[alldata$Group_Status == 'FALSE'] <- "TD"
+alldata$Group_Status[alldata$Group_Status == 'FALSE'] <- "NON-ASC"
 
 # check it yup all good
 #view(alldata)
@@ -615,9 +615,20 @@ alldata <- alldata %>%
 view(alldata)                                
 
 #Export a CSV of the new data set...
-#write.csv(alldata,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\alldataSRS2.csv", row.names = TRUE)
+write.csv(alldata,"C:/Users/eliza/Desktop/ASC_large/SRS2_data\\alldata_SRS2.csv", row.names = TRUE)
 
 # All data extracted and new CSV created called all data created. WHOOP WHOOP!!!!!!!!!
+
+alldataSRS2 <- read_csv("SRS2_data/alldata_SRS2.csv")
+view(alldataSRS2)  
+
+#Let's Reduce the data set a little bit
+alldataSRS2 <- alldataSRS2 %>%
+  distinct(participant, .keep_all = TRUE)
+
+SRS2overall_Large <- alldataSRS2[ , c("participant", "total_RAW_score", "total_t_score", "overall_clinical_range")]
+
+view(SRS2overall_Large)
 
 #Let's examine the data a little 
 

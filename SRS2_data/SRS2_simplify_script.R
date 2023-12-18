@@ -1,20 +1,21 @@
 #Remove extra data to put all ID's together and reduce file Size
 #Remove extra data to put all ID's together and reduce file Size
 library(readr)
-alldata_SRS2 <- read_csv("//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data/alldataSRS2.csv")
-View(alldata_SRS2)
+alldataSRS2 <- read_csv("SRS2_data/alldata_SRS2.csv")
+view(alldataSRS2)  
 
 library(tidyverse)
 
 #total scores first
-SRS2totalscore <- alldata_SRS2[ , c("participant", "total_RAW_score", "total_t_score", "overall_clinical_range")]
+SRS2totalscore <- alldataSRS2[ , c("participant", "total_RAW_score", "total_t_score", "overall_clinical_range", "Group_Status")]
 view(SRS2totalscore)
 
-SRS2totalscoresimp <- SRS2totalscore %>% 
-  distinct(participant, total_RAW_score, total_t_score, overall_clinical_range, .keep_all = TRUE)
-view(SRS2totalscoresimp)
+SRS2totalscore <- SRS2totalscore %>% 
+  distinct(participant, .keep_all = TRUE)
+view(SRS2totalscore)
 
-write.csv (SRS2totalscoresimp,"//nask.man.ac.uk/home$/Desktop/ASC_large/SRS2_data\\SRS2totaltscore", row.names = TRUE)
+
+write.csv (SRS2totalscore,"C:/Users/eliza/Desktop/ASC_large/SRS2_data\\SRS2totalscoresimp", row.names = TRUE)
 
 #This leaves us with 120 lines instead of 7800 Now we can simply transfer this over to our spreadsheet with copy paste. Removes 
 # any human error element. 

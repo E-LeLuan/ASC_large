@@ -1,0 +1,121 @@
+participant,total_RAW_score,total_t_score,overall_clinical_range,Group_Status,EQ_score
+1,120,78,Severe,ASC,29
+2,125,80,Severe,ASC,21
+3,107,73,Moderate,ASC,42
+4,119,78,Severe,ASC,20
+5,173,90,Severe,ASC,9
+6,106,73,Moderate,ASC,29
+7,107,73,Moderate,ASC,24
+8,101,71,Moderate,ASC,19
+9,107,73,Moderate,ASC,39
+10,123,79,Severe,ASC,26
+11,153,90,Severe,ASC,18
+12,139,85,Severe,ASC,16
+13,136,84,Severe,ASC,16
+14,42,51,Within Normal Limits,ASC,50
+15,123,79,Severe,ASC,22
+16,153,90,Severe,ASC,17
+17,157,90,Severe,ASC,17
+18,85,66,Moderate,ASC,17
+19,130,82,Severe,ASC,52
+20,151,89,Severe,ASC,18
+21,104,72,Moderate,ASC,38
+22,126,80,Severe,ASC,14
+23,87,66,Moderate,ASC,29
+24,137,84,Severe,ASC,25
+25,120,78,Severe,ASC,26
+26,126,80,Severe,ASC,22
+27,116,77,Severe,ASC,25
+28,59,57,Within Normal Limits,ASC,55
+29,145,87,Severe,ASC,12
+30,121,78,Severe,ASC,27
+31,132,82,Severe,ASC,16
+32,122,79,Severe,ASC,22
+33,109,74,Moderate,ASC,26
+34,102,72,Moderate,ASC,27
+35,104,72,Moderate,ASC,25
+36,153,90,Severe,ASC,16
+37,96,70,Moderate,ASC,18
+38,134,83,Severe,ASC,28
+39,124,79,Severe,ASC,20
+40,122,79,Severe,ASC,22
+41,150,89,Severe,ASC,19
+42,125,80,Severe,ASC,10
+43,86,66,Moderate,ASC,40
+44,77,63,Mild,ASC,45
+45,106,73,Moderate,ASC,21
+46,81,64,Mild,ASC,23
+47,162,90,Severe,ASC,12
+48,158,90,Severe,ASC,10
+49,159,90,Severe,ASC,10
+50,98,70,Moderate,ASC,23
+51,135,83,Severe,ASC,22
+52,128,81,Severe,ASC,16
+53,130,82,Severe,ASC,25
+54,105,73,Moderate,ASC,24
+55,88,67,Moderate,ASC,30
+56,127,80,Severe,ASC,35
+57,135,83,Severe,ASC,4
+58,144,86,Severe,ASC,15
+59,117,77,Severe,ASC,26
+60,112,75,Moderate,ASC,19
+61,18,42,Within Normal Limits,NON-ASC,51
+62,57,56,Within Normal Limits,NON-ASC,31
+63,44,51,Within Normal Limits,NON-ASC,49
+64,92,68,Moderate,NON-ASC,48
+65,41,50,Within Normal Limits,NON-ASC,60
+66,15,41,Within Normal Limits,NON-ASC,63
+67,14,41,Within Normal Limits,NON-ASC,57
+68,51,54,Within Normal Limits,NON-ASC,45
+69,84,65,Mild,NON-ASC,41
+70,30,46,Within Normal Limits,NON-ASC,62
+71,35,48,Within Normal Limits,NON-ASC,53
+72,55,55,Within Normal Limits,NON-ASC,52
+73,37,49,Within Normal Limits,NON-ASC,41
+74,70,60,Mild,NON-ASC,37
+75,93,69,Moderate,NON-ASC,35
+76,36,48,Within Normal Limits,NON-ASC,58
+77,48,53,Within Normal Limits,NON-ASC,51
+78,38,49,Within Normal Limits,NON-ASC,39
+79,106,73,Moderate,NON-ASC,31
+80,30,46,Within Normal Limits,NON-ASC,56
+81,30,46,Within Normal Limits,NON-ASC,49
+82,18,42,Within Normal Limits,NON-ASC,77
+83,25,45,Within Normal Limits,NON-ASC,48
+84,51,54,Within Normal Limits,NON-ASC,48
+85,87,66,Moderate,NON-ASC,34
+86,113,76,Severe,NON-ASC,22
+87,46,52,Within Normal Limits,NON-ASC,37
+88,39,50,Within Normal Limits,NON-ASC,46
+89,20,43,Within Normal Limits,NON-ASC,58
+90,71,61,Mild,NON-ASC,54
+91,96,70,Moderate,NON-ASC,15
+92,29,46,Within Normal Limits,NON-ASC,58
+93,67,59,Within Normal Limits,NON-ASC,59
+94,48,53,Within Normal Limits,NON-ASC,30
+95,23,44,Within Normal Limits,NON-ASC,59
+96,32,47,Within Normal Limits,NON-ASC,51
+97,30,46,Within Normal Limits,NON-ASC,55
+98,83,65,Mild,NON-ASC,34
+99,55,55,Within Normal Limits,NON-ASC,43
+100,23,44,Within Normal Limits,NON-ASC,44
+101,8,39,Within Normal Limits,NON-ASC,69
+102,60,57,Within Normal Limits,NON-ASC,41
+103,47,52,Within Normal Limits,NON-ASC,42
+104,35,48,Within Normal Limits,NON-ASC,65
+105,67,59,Within Normal Limits,NON-ASC,37
+106,23,44,Within Normal Limits,NON-ASC,53
+107,28,46,Within Normal Limits,NON-ASC,59
+108,92,68,Moderate,NON-ASC,54
+109,39,50,Within Normal Limits,NON-ASC,43
+110,14,41,Within Normal Limits,NON-ASC,54
+111,9,39,Within Normal Limits,NON-ASC,68
+112,35,48,Within Normal Limits,NON-ASC,53
+113,75,62,Mild,NON-ASC,27
+114,90,67,Moderate,NON-ASC,24
+115,28,46,Within Normal Limits,NON-ASC,47
+116,15,41,Within Normal Limits,NON-ASC,5
+117,57,56,Within Normal Limits,NON-ASC,29
+118,34,48,Within Normal Limits,NON-ASC,37
+119,82,65,Mild,NON-ASC,43
+120,55,55,Within Normal Limits,NON-ASC,38
