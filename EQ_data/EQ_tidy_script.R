@@ -161,7 +161,7 @@ alldata_EQ <- alldata_EQ%>%
 
 # Rename TRUE FALSE to more meaningful labels.
 alldata_EQ$Group_Status[alldata_EQ$Group_Status == 'TRUE'] <- "ASC"
-alldata_EQ$Group_Status[alldata_EQ$Group_Status == 'FALSE'] <- "TD"
+alldata_EQ$Group_Status[alldata_EQ$Group_Status == 'FALSE'] <- "NON-ASC"
 view(alldata_EQ)
 
 # EQ scoring ignore none as these are filler items we are not interested in. 
@@ -204,44 +204,38 @@ alldata_EQ %>%
 #<chr>                   <dbl>          <dbl>
 #1 ASC                      23.7           10.4
 #2 TD                       46.2           13.4
-#Add in group status
-Reduced_IDs_IR <- alldata_EQ%>%
-  mutate(Group_Status = participant <= 30)
-
-# Rename TRUE FALSE to more meaningful labels.
-Reduced_IDs_IR$Group_Status[Reduced_IDs_IR$Group_Status == 'TRUE'] <- "ASC"
-Reduced_IDs_IR$Group_Status[Reduced_IDs_IR$Group_Status == 'FALSE'] <- "TD"
-view(Reduced_IDs_IR)
 
 
-Reduced_IDs_IR <- Reduced_IDs_IR %>%
+alldata_EQ <- alldata_EQ %>%
   distinct(participant, .keep_all = TRUE)
 
-view(Reduced_IDs_IR)
+alldata_EQ <- alldata_EQ[ , c("participant", "EQ_score", "Group_Status")]
 
+
+view(alldata_EQ)
+
+#Export a CSV of the new data set...
+write.csv(alldata_EQ,"C:/Users/eliza/Desktop/ASC_large/EQ_data\\alldata_EQ.csv", row.names = TRUE)
 
 
 library(ggpubr)
 
 #EQ
-compare_means(EQ_score ~ Group_Status, data = Reduced_IDs_IR, method = "t.test")
+compare_means(EQ_score ~ Group_Status, data = alldata_EQ, method = "t.test")
 
 #stat_compare_means(mapping = NULL, comparisons = "Group_Status" hide.ns = FALSE,
 #                   label = p.signif,  label.x = NULL, label.y = NULL,  ...)
 
-p <- ggboxplot(Reduced_IDs_IR, x = "Group_Status", y = "EQ_score",
+p <- ggboxplot(alldata_EQ, x = "Group_Status", y = "EQ_score",
                color = "Group_Status", palette = "jco",
                add = "jitter")
 #  Add p-value
 p + stat_compare_means(method = "t.test")
-# Change method
-p + stat_compare_means(method = "t.test")
+p + labs(title = "Overall score on EQ", x = "Group", y = "EQ")
 
-t.test(EQ_score ~ Group_Status, data = Reduced_IDs_IR)
-Reduced_IDs_IR %>% 
+
+t.test(EQ_score ~ Group_Status, data = alldata_EQ)
+alldata_EQ %>% 
   group_by(Group_Status) %>%
   summarize(meanASC = mean(EQ_score),
             sdASC = sd(EQ_score))
-
-#Export a CSV of the new data set...
-write.csv(Reduced_IDs_IR,"//Desktop/ASC_large/EQ_data\\alldataEQ.csv", row.names = TRUE)

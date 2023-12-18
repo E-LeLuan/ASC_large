@@ -260,6 +260,7 @@ all_data_join <- all_data_join %>% group_by(participant) %>%
   mutate(TT = (RT1ms + RT2ms + RT3ms + RT4ms + RT5ms + RT6ms))
 
 #remove outliers as model unable to converge 
+ggbetweenstats(all_data_join, condition_number, TT, outlier.tagging = TRUE)
 Q <- quantile(all_data_join$TT, probs=c(.25, .75), na.rm = FALSE)
 #view(Q)
 iqr <- IQR(all_data_join$TT)
